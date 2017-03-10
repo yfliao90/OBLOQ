@@ -168,7 +168,7 @@ $$
 
 
 
-##### [Arduino UNO](http://www.dfrobot.com.cn/goods-521.html)
+##### Arduino UNO
 
 功能：主控板。它是Arduino系列的一款开源电子平台，主要基于AVR单片机的微控制器和相应的开发软件，为非电子专业和业余爱好者使用而设计。（[详细使用说明](http://www.dfrobot.com.cn/images/upload/File/20150129112804mdoxsq.pdf)）
 
@@ -212,7 +212,7 @@ $$
 #define WIFI_SSID       "DFSoftware"       //wifi名称
 #define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
 #define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170317"             //物联网账号密码
+#define IOT_PASSWD      "20170307"             //物联网账号密码
 ```
 
 
@@ -354,7 +354,7 @@ void keyScan()
 #define WIFI_SSID       "DFSoftware"       //wifi名称
 #define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
 #define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170317"             //物联网账号密码
+#define IOT_PASSWD      "20170307"             //物联网账号密码
 ```
 
 
