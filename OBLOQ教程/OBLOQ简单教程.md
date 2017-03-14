@@ -168,6 +168,16 @@ $$
 
 
 
+信号灯含义
+
+|  颜色  |        指示状态         |
+| :--: | :-----------------: |
+|  红色  |       没有正常运行        |
+|  白色  |                     |
+|  蓝色  |        有新版固件        |
+|  黄色  |      连接服务器的过程中      |
+|  绿色  | 正常工作 server connect |
+
 ##### Arduino UNO
 
 功能：主控板。它是Arduino系列的一款开源电子平台，主要基于AVR单片机的微控制器和相应的开发软件，为非电子专业和业余爱好者使用而设计。（[详细使用说明](http://www.dfrobot.com.cn/images/upload/File/20150129112804mdoxsq.pdf)）
@@ -448,6 +458,33 @@ void loop(void)
 
 ### 一些注意事项
 
+* 程序中的wifi账号，密码，物联网账号，密码要保证书写的正确性
+* 硬件连线要正确
+
+### FAQ
+
+Q：模块通电后，板子的信号灯不亮
+
+A：电源正负极接线有问题，检查接线
+
+
+
+Q：模块信号灯保持黄色常亮
+
+A：模块联网过程中卡在连接服务器的过程中，重启主控板。
+
+
+
+Q：物联网Web端没有就收到发送过来的消息
+
+A： 检查程序中的设备名称和物联网Web端的设备名称是否保持一致
+
+
+
+Q：为什么刚更新固件还会提示有新版固件
+
+A：
+
 
 
 ## 5. 总结和拓展
@@ -460,7 +497,167 @@ void loop(void)
 
 ### 回调函数概念和作用
 
+**概念：**
+
+回调函数就是一个通过函数指针调用的函数
+
+**作用：**
+
+回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进行响应。
+
+
+
 ### 本例中可以通过回调函数做什么事情
 
+在本例中，主要通过回调函数查看OBLOQ模块连接wifi和物联网服务器的连接状态，通过串口打印的消息，我们就可以知道OBLOQ模块有没有连接成功。
+
+
+
+### 样例代码
+
+```
+/*
+ DFRobot_callback
+
+ *function:
+ Through the callback function to check the Internet of things connected to the various states, 
+ used to debug and modify the program
+
+  //EVENT_CODE_WIFI               //0:ssid或密码错误,1:已连接,2:已断开
+  //EVENT_CODE_SERVER             // 0:用户名或密码错误,1:已连接,2:已断开
+  //EVENT_CODE_NEW_VERSION        // x:最新版本字符串信息
+  //EVENT_CODE_UPGRADE_PERCENT    // 0~100 更新进度
+  //EVENT_CODE_UART               // 0:异常,1:正常
+  //EVENT_CODE_UNKNOWN            // 0:未定义错误
+
+ created 2017/3/6
+ by Jason
+ */
+
+#include <SoftwareSerial.h>
+#include "Iot.h"
+
+#define IOTDBG(...) if(1){Serial.print("["); Serial.print(__FUNCTION__); Serial.print("(): "); Serial.print(__LINE__); Serial.print(" ] "); Serial.println(__VA_ARGS__);}
+void * eventCb(uint8_t type, const char *data, uint16_t len);
+Iot iot(eventCb);
+
+SoftwareSerial mySerial(10, 11);           // RX, TX
+
+#define WIFI_SSID       "DFSoftware"       //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
+#define IOT_USERNAME    "test"             //物联网账号
+#define IOT_PASSWD      "test"             //物联网账号密码
+
+unsigned long long sendTime = 0;
+bool sendFlag = true;
+
+void * eventCb(uint8_t eventType, const char *data, uint16_t len)
+{
+ 
+  IOTDBG(eventType,HEX);
+  IOTDBG(data[0],HEX);
+  switch(eventType){
+    case EVENT_CODE_WIFI:
+      if(data[0] == 0){
+        IOTDBG("EVENT_CODE_WIFI: ssid or passwd error");
+      }else if(data[0] == 1){
+        IOTDBG("EVENT_CODE_WIFI: wifi connect");
+      }else if(data[0] == 2){
+        IOTDBG("EVENT_CODE_WIFI: wifi disconnect");
+      }else{
+        IOTDBG("EVENT_CODE_WIFI: wifi error arg");
+      }
+      break;
+    case EVENT_CODE_SERVER:
+      if(data[0] == 1){
+        IOTDBG("EVENT_CODE_SERVER: server connect");
+      }else if(data[0] == 2){
+        IOTDBG("EVENT_CODE_SERVER: server disconnect");
+      }else if(data[0] == 0){
+        IOTDBG("EVENT_CODE_SERVER: username or passwd error");
+      }else{
+        IOTDBG("EVENT_CODE_SERVER: server error arg");
+      }
+      break;
+    case EVENT_CODE_NEW_VERSION:
+      IOTDBG("eventType: has new Version");
+      IOTDBG(data);
+      //iot.update();//默认升级到当前平台最新版//iot.update(PLATFORM_CURRENT,"0");
+      break;
+    case EVENT_CODE_UPGRADE_PERCENT:
+      //uint8_t percent = (uint8_t)data[0];
+      IOTDBG("eventType: upgrade percent:");
+      IOTDBG((uint8_t)data[0]);
+    case EVENT_CODE_UART:
+      break;
+    case EVENT_CODE_UNKNOWN:
+      break;
+    default:
+      break;
+  }
+}
+
+void * myTest(const char *data, uint16_t len)
+{
+  Serial.print("my Relay1 Recv:");
+  Serial.println(data);
+  Serial.print("len=");
+  Serial.println(len);
+  return NULL;
+}
+
+void setup(void)
+{
+  Serial.begin(115200);
+  mySerial.begin(38400);
+  while(!Serial);
+  iot.setDbgSerial(Serial);
+  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
+  iot.subscribe("Relay1", myTest);          
+  iot.start();
+}
+
+void loop(void)
+{
+  //两秒钟发送一次字符串，循环发送"down","up"
+	if(millis() - sendTime > 2000){
+		sendTime = millis();
+		if(sendFlag){
+            sendFlag = false;
+			iot.publish("key1", "down");
+		}else{
+            sendFlag = true;
+			iot.publish("key1", "up");
+		}
+	}
+	iot.loop();
+}
+```
+
+
+
 ### 举例说明log中各个参数的作用
+
+| log消息                                    | 消息含义         |
+| :--------------------------------------- | ------------ |
+| **EVENT_CODE_WIFI: ssid or passwd error** | wifi账号或者密码错误 |
+| **EVENT_CODE_WIFI: wifi connect **       | wifi连接成功     |
+| **EVENT_CODE_WIFI: wifi disconnect**     | wifi断开连接     |
+| **EVENT_CODE_SERVER: server connect**    | 服务器连接成功      |
+| **EVENT_CODE_SERVER: server disconnect** | 服务器断开连接      |
+| **EVENT_CODE_SERVER: username or passwd error** | 物联网账号或密码错误   |
+| **eventType: has new Version**           | 有新固件         |
+|                                          |              |
+
+
+
+**EVENT_CODE_WIFI: wifi connect： **           wifi连接成功
+
+
+
+
+
+
+
+
 
