@@ -170,13 +170,13 @@ $$
 
 信号灯含义
 
-|  颜色  |        指示状态         |
-| :--: | :-----------------: |
-|  红色  |       没有正常运行        |
-|  白色  |                     |
-|  蓝色  |        有新版固件        |
-|  黄色  |      连接服务器的过程中      |
-|  绿色  | 正常工作 server connect |
+|  颜色  | 指示状态   |
+| :--: | :----- |
+|  红色  | 没有正常运行 |
+|  白色  | 连上wifi |
+|  蓝色  | 有新版固件  |
+|  黄色  | 连接服务器中 |
+|  绿色  | 正常工作   |
 
 ##### Arduino UNO
 
@@ -219,10 +219,10 @@ $$
 代码已经写好了。使用时注意修改关于用户的一些信息，就可以烧录到控制按键的主控板中使用。
 
 ```c++
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
 #define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170307"             //物联网账号密码
+#define IOT_PASSWD      "20170307"              //物联网账号密码
 ```
 
 
@@ -361,10 +361,10 @@ void keyScan()
 同上，使用代码时注意修改关于用户的一些信息，就可以烧录到控制LED模块/台灯的主控板中使用。
 
 ```c++
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
 #define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170307"             //物联网账号密码
+#define IOT_PASSWD      "20170307"              //物联网账号密码
 ```
 
 
@@ -396,12 +396,12 @@ Iot iot(eventCb);                          //当物联网既需要接收数据�
 
 int tempData = 0;                          //缓存接收的整型数据
 
-SoftwareSerial mySerial(10, 11);         // RX, TX
+SoftwareSerial mySerial(10, 11);           // RX, TX
 
 #define WIFI_SSID       "DFSoftware"       //wifi名称
 #define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
-#define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170307"             //物联网账号密码
+#define IOT_USERNAME    "obloquser"        //物联网账号
+#define IOT_PASSWD      "20170307"         //物联网账号密码
 
 //连接状态回调函数
 void * eventCb(uint8_t eventType, const char *data, uint16_t len)
@@ -459,9 +459,33 @@ void loop(void)
 * 程序中的wifi账号（SSID）、密码，物联网账号、密码、设备名称要保证书写的正确性
 * 硬件连线要正确
 
+<<<<<<< Updated upstream
 
 
 ## 5. 总结和故障处理
+=======
+### FAQ
+
+Q：模块通电后，板子的信号灯不亮
+
+A：电源正负极接线有问题，检查接线
+
+
+
+Q：模块信号灯一直保持黄色常亮
+
+A：模块联网过程中卡在连接服务器的过程中，重启UNO主控板。
+
+
+
+Q：物联网Web端没有就收到发送过来的消息
+
+A： 检查程序中的设备名称和物联网Web端的设备名称是否保持一致
+
+
+
+## 5. 总结和拓展
+>>>>>>> Stashed changes
 
 我们通过完成“按键联网控制小灯”这个简单的小项目，了解了如何利用OBLOQ模块制作联网设备，包括可以发送信息的“发送端设备”（按键），和接收信息并执行指令的“接送端设备”（台灯）。
 
@@ -486,6 +510,11 @@ void loop(void)
 
 **样例代码**
 
+<<<<<<< Updated upstream
+=======
+### 样例代码
+
+>>>>>>> Stashed changes
 ```c++
 /*
  DFRobot_callback
