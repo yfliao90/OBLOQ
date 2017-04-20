@@ -1,20 +1,27 @@
-/*
- DFRobot_callback
-
- *function:
- Through the callback function to check the Internet of things connected to the various states, 
- used to debug and modify the program
-
-  //EVENT_CODE_WIFI               //0:ssid或密码错误,1:已连接,2:已断开
-  //EVENT_CODE_SERVER             // 0:用户名或密码错误,1:已连接,2:已断开
-  //EVENT_CODE_NEW_VERSION        // x:最新版本字符串信息
-  //EVENT_CODE_UPGRADE_PERCENT    // 0~100 更新进度
-  //EVENT_CODE_UART               // 0:异常,1:正常
-  //EVENT_CODE_UNKNOWN            // 0:未定义错误
-
- created 2017/3/6
- by Jason
- */
+/*********************************************************************
+* DFRobot_advancedReceive.
+*
+* Copyright (C)    2017   [DFRobot](http://www.dfrobot.com),
+* This Library is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Description:
+* Through the callback function to check the Internet of things connected to the various states, 
+* used to debug and modify the program
+* 
+*  //EVENT_CODE_WIFI               //0:ssid或密码错误,1:已连接,2:已断开
+*  //EVENT_CODE_SERVER             // 0:用户名或密码错误,1:已连接,2:已断开
+*  //EVENT_CODE_NEW_VERSION        // x:最新版本字符串信息
+*  //EVENT_CODE_UPGRADE_PERCENT    // 0~100 更新进度
+*  //EVENT_CODE_UART               // 0:异常,1:正常
+*  //EVENT_CODE_UNKNOWN            // 0:未定义错误
+*  
+* author  :  Jason
+* version :  V1.0
+* date    :  2017-03-06
+**********************************************************************/
 
 #include <SoftwareSerial.h>
 #include "Iot.h"
@@ -81,7 +88,7 @@ void * eventCb(uint8_t eventType, const char *data, uint16_t len)
 
 void * myTest(const char *data, uint16_t len)
 {
-  Serial.print("my Relay1 Recv:");
+  Serial.print("my Button Recv:");
   Serial.println(data);
   Serial.print("len=");
   Serial.println(len);
@@ -95,7 +102,7 @@ void setup(void)
   while(!Serial);
   iot.setDbgSerial(Serial);
   iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
-  iot.subscribe("Relay1", myTest);          
+  iot.subscribe("Button", myTest);          
   iot.start();
 }
 
@@ -106,10 +113,10 @@ void loop(void)
 		sendTime = millis();
 		if(sendFlag){
       sendFlag = false;
-			iot.publish("key1", "down");
+			iot.publish("Button", "down");
 		}else{
       sendFlag = true;
-			iot.publish("key1", "up");
+			iot.publish("Button", "up");
 		}
 	}
 	iot.loop();

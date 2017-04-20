@@ -249,19 +249,23 @@ $$
 **具体代码**
 
 ```c++
-/*
-  DFRobot_advancedSend
-
- * pushbutton attached to pin 2 from +5V
- * 10K resistor attached to pin 2 from ground
-
- *function:
- The IOT device sends a message when the key is pressed
- We can convert the integer number to a string and send it out through the IOT device
-
- created 2017/3/6
- by Jason
- */
+/*********************************************************************
+* DFRobot_advancedSend.
+*
+* Copyright (C)    2017   [DFRobot](http://www.dfrobot.com),
+* This Library is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Description:
+* The IOT device sends a message when the key is pressed
+* We can convert the integer number to a string and send it out through the IOT device
+* 
+* author  :  Jason
+* version :  V1.0
+* date    :  2017-03-06
+**********************************************************************/
  
 #include <SoftwareSerial.h>
 #include "Iot.h"
@@ -269,12 +273,12 @@ $$
 void * eventCb(uint8_t type, const char *data, uint16_t len);
 Iot iot(eventCb);                          //当物联网既需要接收数据有需要发送数据的时候，需要传入回调函数
 
-SoftwareSerial mySerial(10, 11);           // RX, TX
+SoftwareSerial mySerial(10, 11);         // RX, TX
 
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
 #define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170307"             //物联网账号密码
+#define IOT_PASSWD      "20170307"              //物联网账号密码
 
 char *tempString =      "string";
 int normalVoltage = 0;                     //按键防抖动的相关参数
@@ -305,12 +309,12 @@ void loop(void)
   if(isClick)
   {
     if(sendFlag){
-      itoa(1,tempString,10);                //将整型转换成字符串，然后再发送
-      iot.publish("Button", tempString);
+      itoa(1,tempString,10);                 //方法一：将整型转换成字符串，然后再发送
+      iot.publish("Button", tempString);    
       sendFlag = false;
     }
     else{
-      iot.publish("Button", "0");             //直接发送字符串0也可以
+      iot.publish("Button", "0");             //方法二：直接发送字符串0也可以
       sendFlag = true;
     }    
   }
@@ -349,6 +353,7 @@ void keyScan()
         hasPress = false;
     }
 }
+
 ```
 
 
@@ -411,21 +416,23 @@ void keyScan()
 **具体代码**
 
 ```c++
-/*
-  DFRobot_advancedReceive
+/*********************************************************************
+* DFRobot_advancedReceive.
+*
+* Copyright (C)    2017   [DFRobot](http://www.dfrobot.com),
+* This Library is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Description:
+* The IOT device receives the number 1, turns on the LED, otherwise turns off the LED
+* 
+* author  :  Jason
+* version :  V1.0
+* date    :  2017-03-06
+**********************************************************************/
 
- * LED attached from pin 13 to ground
-  
- * Note: 
- on most Arduinos there is already an LED on the board attached to pin 13.
-
- *function:
- The IOT device receives the number 1, turns on the LED, otherwise turns off the LED
-
- created 2017/3/6
- by Jason
-
- */
 
 #include <SoftwareSerial.h>
 #include "Iot.h"
@@ -433,35 +440,36 @@ void keyScan()
 void * eventCb(uint8_t type, const char *data, uint16_t len);
 Iot iot(eventCb);                          //当物联网既需要接收数据有需要发送数据的时候，需要传入回调函数
 
+int ledPin = 2;
 int tempData = 0;                          //缓存接收的整型数据
 
-SoftwareSerial mySerial(10, 11);           // RX, TX
+SoftwareSerial mySerial(10, 11);         // RX, TX
 
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
-#define IOT_USERNAME    "obloquser"        //物联网账号
-#define IOT_PASSWD      "20170307"         //物联网账号密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define IOT_USERNAME    "obloquser"             //物联网账号
+#define IOT_PASSWD      "20170307"              //物联网账号密码
 
 //连接状态回调函数
 void * eventCb(uint8_t eventType, const char *data, uint16_t len)
 {
 }
 
-void * myKey(const char *data, uint16_t len)
+void * myButton(const char *data, uint16_t len)
 {
   tempData = atoi(data);                   //字符串转整型,浮点型，长整形...等atoi(),atof(),atol()...
   if(tempData == 1)
-    digitalWrite(13,HIGH);                 //打开LED小灯
+    digitalWrite(ledPin,HIGH);                 //打开LED小灯
   if(tempData == 0)
-    digitalWrite(13,LOW);                  //关闭LED小灯 
+    digitalWrite(ledPin,LOW);                  //关闭LED小灯 
 }
 
 void setup(void)
 { 
   mySerial.begin(38400);
-  pinMode(13,OUTPUT);
+  pinMode(ledPin,OUTPUT);
   iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
-  iot.subscribe("Button", myKey);
+  iot.subscribe("Button", myButton);
   iot.start();
 }
 
@@ -531,30 +539,37 @@ void loop(void)
 
 然而，意外情况也是可能发生的。如果你遇到了不可判别原因的问题，可以尝试下面这段代码“检测故障”。
 
-将这段代码编译后，烧入疑似故障的硬件相连的主控板里，重启运行固件，从串口打印出的消息中，我们能够查看OBLOQ模块连接wifi和物联网服务器的连接状态，比如OBLOQ模块有没有连接成功。
+将这段代码编译后，烧入疑似故障的硬件相连的主控板里，重启运行固件，查看串口打印出的消息，我们能够查看OBLOQ模块连接wifi和物联网服务器的连接状态，比如OBLOQ模块有没有连接成功。
 
 
 
 ### 样例代码
 
 ```c++
-/*
- DFRobot_callback
-
- *function:
- Through the callback function to check the Internet of things connected to the various states, 
- used to debug and modify the program
-
-  //EVENT_CODE_WIFI               //0:ssid或密码错误,1:已连接,2:已断开
-  //EVENT_CODE_SERVER             // 0:用户名或密码错误,1:已连接,2:已断开
-  //EVENT_CODE_NEW_VERSION        // x:最新版本字符串信息
-  //EVENT_CODE_UPGRADE_PERCENT    // 0~100 更新进度
-  //EVENT_CODE_UART               // 0:异常,1:正常
-  //EVENT_CODE_UNKNOWN            // 0:未定义错误
-
- created 2017/3/6
- by Jason
- */
+/****************************************************************************************
+* DFRobot_advancedReceive.
+*
+* Copyright (C)    2017   [DFRobot](http://www.dfrobot.com),
+* This Library is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Description:
+* Through the callback function to check the Internet of things connected to the various states, 
+* used to debug and modify the program
+* 
+*  //EVENT_CODE_WIFI               //0:ssid或密码错误,1:已连接,2:已断开
+*  //EVENT_CODE_SERVER             // 0:用户名或密码错误,1:已连接,2:已断开
+*  //EVENT_CODE_NEW_VERSION        // x:最新版本字符串信息
+*  //EVENT_CODE_UPGRADE_PERCENT    // 0~100 更新进度
+*  //EVENT_CODE_UART               // 0:异常,1:正常
+*  //EVENT_CODE_UNKNOWN            // 0:未定义错误
+*  
+* author  :  Jason
+* version :  V1.0
+* date    :  2017-03-06
+*****************************************************************************************/
 
 #include <SoftwareSerial.h>
 #include "Iot.h"
@@ -563,12 +578,12 @@ void loop(void)
 void * eventCb(uint8_t type, const char *data, uint16_t len);
 Iot iot(eventCb);
 
-SoftwareSerial mySerial(10, 11);           // RX, TX
+SoftwareSerial mySerial(10, 11);         // RX, TX
 
 #define WIFI_SSID       "DFSoftware"       //wifi名称
 #define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
-#define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170307"             //物联网账号密码
+#define IOT_USERNAME    "test"             //物联网账号
+#define IOT_PASSWD      "test"             //物联网账号密码
 
 unsigned long long sendTime = 0;
 bool sendFlag = true;
@@ -621,7 +636,7 @@ void * eventCb(uint8_t eventType, const char *data, uint16_t len)
 
 void * myTest(const char *data, uint16_t len)
 {
-  Serial.print("my Relay1 Recv:");
+  Serial.print("my Button Recv:");
   Serial.println(data);
   Serial.print("len=");
   Serial.println(len);
@@ -635,7 +650,7 @@ void setup(void)
   while(!Serial);
   iot.setDbgSerial(Serial);
   iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
-  iot.subscribe("Relay1", myTest);          
+  iot.subscribe("Button", myTest);          
   iot.start();
 }
 
@@ -645,11 +660,11 @@ void loop(void)
 	if(millis() - sendTime > 2000){
 		sendTime = millis();
 		if(sendFlag){
-            sendFlag = false;
-			iot.publish("key1", "down");
+      sendFlag = false;
+			iot.publish("Button", "down");
 		}else{
-            sendFlag = true;
-			iot.publish("key1", "up");
+      sendFlag = true;
+			iot.publish("Button", "up");
 		}
 	}
 	iot.loop();
@@ -657,6 +672,18 @@ void loop(void)
 ```
 
 
+
+打开Arduino IDE 的串口工具：
+
+![Serial](.\img\Serial.png)
+
+
+
+
+
+查看调试信息：
+
+![callBack](.\img\callBack.png)
 
 有经验的用户可能已经看出来了，这是回调函数的一种用法。
 

@@ -1,16 +1,20 @@
-/*
-  DFRobot_advancedSend
-
- * pushbutton attached to pin 2 from +5V
- * 10K resistor attached to pin 2 from ground
-
- *function:
- The IOT device sends a message when the key is pressed
- We can convert the integer number to a string and send it out through the IOT device
-
- created 2017/3/6
- by Jason
- */
+/*********************************************************************
+* DFRobot_advancedSend.
+*
+* Copyright (C)    2017   [DFRobot](http://www.dfrobot.com),
+* This Library is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* Description:
+* The IOT device sends a message when the key is pressed
+* We can convert the integer number to a string and send it out through the IOT device
+* 
+* author  :  Jason
+* version :  V1.0
+* date    :  2017-03-06
+**********************************************************************/
  
 #include <SoftwareSerial.h>
 #include "Iot.h"
@@ -54,12 +58,12 @@ void loop(void)
   if(isClick)
   {
     if(sendFlag){
-      itoa(1,tempString,10);                //将整型转换成字符串，然后再发送
-      iot.publish("key1", tempString);
+      itoa(1,tempString,10);                 //方法一：将整型转换成字符串，然后再发送
+      iot.publish("Button", tempString);    
       sendFlag = false;
     }
     else{
-      iot.publish("key1", "0");             //直接发送字符串0也可以
+      iot.publish("Button", "0");             //方法二：直接发送字符串0也可以
       sendFlag = true;
     }    
   }
