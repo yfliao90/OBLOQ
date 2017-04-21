@@ -25,17 +25,82 @@ OBLOQ包括一系列物联网产品：
 
 
 
-设备和主控板应该是比较熟悉的概念了，不再赘述。
+具体怎么使用OBLOQ呢？下一章进入正题，我们将用OBLOQ实现一个按键远程无线控制一台台灯的亮灭。
 
-我们来稍微认识下OBLOQ硬件模块，还有OBLOQ-web的设备页面。
 
-OBLOQ模块（用来联网）：
 
-<img src=".\img\OBLOQ实物2.jpg" style="zoom:100%">
+本章末尾是对OBLOQ各个部件的简单介绍，这部分内容不影响实际操作，请根据需要选择跳过或查看。
 
-OBLOQ-web设备页面（用来收发设备传输的数据，将数据可视化）：
+#### 附：各部件简介
 
-<img src=".\img\设备页面.png" style="zoom:100%">
+##### OBLOQ模块
+
+功能：无线上网模块。能使设备能通过wifi连接上网，收发数据。正常工作时OBLOQ上绿色LED灯常亮。
+
+结构图：
+
+<img src="./img/OBLOQ引脚说明图.jpg" width="400px">
+
+实物图：
+
+<img src=".\img\OBLOQ实物2.jpg" width="400px">
+
+
+
+各个接口的含义
+
+|  名称  | 功能描述  |
+| :--: | :---: |
+|  TX  | 串口发送端 |
+|  RX  | 串口接收端 |
+| GND  | 电源负极  |
+| VCC  | 电源正极  |
+
+
+
+信号灯含义
+
+|  颜色  | 指示状态   |
+| :--: | :----- |
+|  红色  | 没有正常运行 |
+|  白色  | 连上wifi |
+|  蓝色  | 有新版固件  |
+|  黄色  | 连接服务器中 |
+|  绿色  | 正常工作   |
+
+
+
+##### Arduino UNO
+
+功能：主控板。它是Arduino系列的一款开源电子平台，主要基于AVR单片机的微控制器和相应的开发软件，为非电子专业和业余爱好者使用而设计。（[详细使用说明](http://www.dfrobot.com.cn/images/upload/File/20150129112804mdoxsq.pdf)）
+
+结构图：
+
+<img src=".\img\UNO R3.png" width="600px">
+
+各个接口的含义：
+
+<img src=".\img\UNO.png" style="zoom:100%">
+
+
+
+**OBLOQ-web**
+
+网站主页：
+
+<img src="./img/OBLOQ主页.png">
+
+
+
+设备页面：
+
+![设备数据页面](.\img\设备数据页面.png)
+
+
+
+数据筛选页面：
+
+![数据筛选页面](.\img\数据筛选页面.png)
 
 
 
@@ -43,11 +108,8 @@ OBLOQ-web设备页面（用来收发设备传输的数据，将数据可视化�
 
 * 用户能够直接通过OBLOQ-web发送控制指令，进行设备控制；
 * 也可以将OBLOQ-web当作一个指令中转站，用“设备1”（sender）给远端“设备2”（receiver）发送控制指令。
+* 用户能在设备页面进行数据筛选，并将筛选出来的数据可视化。
 
-
-
-
-具体怎么使用OBLOQ呢？下面进入正题，我们将用OBLOQ实现一个按键远程无线控制一台台灯的亮灭。
 
 
 
@@ -132,6 +194,8 @@ $$
 
 <img src=".\img\button硬件连接.jpg" style="zoom:100%">
 
+
+
 **接收端**（当使用LED模块代替台灯时）
 
 <img src=".\img\接收设备&led.png" style="zoom:100%">
@@ -166,53 +230,6 @@ $$
 
 
 
-#### 附：硬件结构进阶简介
-
-##### OBLOQ模块
-
-功能：无线上网模块。能使设备能通过wifi连接上网，收发数据。正常工作时OBLOQ上绿色LED灯常亮。
-
-结构图：
-
-<img src="./img/OBLOQ引脚说明图.jpg" width="400px">
-
-
-
-各个接口的含义
-
-|  名称  | 功能描述  |
-| :--: | :---: |
-|  TX  | 串口发送端 |
-|  RX  | 串口接收端 |
-| GND  | 电源负极  |
-| VCC  | 电源正极  |
-
-
-
-信号灯含义
-
-|  颜色  | 指示状态   |
-| :--: | :----- |
-|  红色  | 没有正常运行 |
-|  白色  | 连上wifi |
-|  蓝色  | 有新版固件  |
-|  黄色  | 连接服务器中 |
-|  绿色  | 正常工作   |
-
-##### Arduino UNO
-
-功能：主控板。它是Arduino系列的一款开源电子平台，主要基于AVR单片机的微控制器和相应的开发软件，为非电子专业和业余爱好者使用而设计。（[详细使用说明](http://www.dfrobot.com.cn/images/upload/File/20150129112804mdoxsq.pdf)）
-
-结构图：
-
-<img src=".\img\UNO R3.png" width="600px">
-
-各个接口的含义：
-
-<img src=".\img\UNO.png" style="zoom:100%">
-
-
-
 ## 3. 在主控板上烧录控制程序
 
 完成硬件搭建后，为了能让这些模块和板子运作起来，我们不但要给它们供电，还要给主控板写入运作逻辑的程序。
@@ -220,6 +237,14 @@ $$
 这次，控制程序是直接写入主控板Flash 内存的，除非再次写入，否则硬件运作的逻辑不会改变。所以这类程序又叫固件，固件是担任着一个系统最基础最底层工作的软件。而往硬件的Flash或内存中写入程序的过程叫程序烧录。
 
 现在，我们要制作两个固件程序，分别控制按键和台灯（或LED模块）。
+
+
+
+**在制作固件程序之前，你可能需要知道Arduino UNO程序烧录的基本操作步骤**
+
+1. 查看 [Arduino中文手册](http://www.dfrobot.com.cn/images/upload/File/20150129112804mdoxsq.pdf) 第1-13页，下载安装Arduino IDE和驱动，配置板卡和串口.
+2. 下载DFRobot的 IoT库文件，并在Arduino内部加载。（[IoT库文件下载地址](https://github.com/DFRobot/IotTest), [Arduino加载库文件的方法](https://jingyan.baidu.com/article/8065f87f904f4c2331249881.html)）
+3. 在Arduino IDE内输入程序源码，进行校验（也就是编译），最后下载（也就是烧录）。
 
 
 
@@ -235,13 +260,21 @@ $$
 
 本例中，程序会反复检测按键是否按下，当检测到按键第一次按下的时候，OBLOQ系统向设备Lamp发送消息”1“，当检测到按键第二次按下的时候，向设备Lamp发送消息”0“，如此循环检测执行。
 
-代码已经写好了。使用时注意修改关于用户的一些信息，就可以烧录到控制按键的主控板中使用。
+
+
+**特别注意！**
+
+实际程序中必须修改程序中以下信息才能正常使用。
 
 ```c++
-#define WIFI_SSID       "DFSoftware"            //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
-#define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170307"              //物联网账号密码
+#define WIFI_SSID       "DFSoftware"            //"DFSoftware"改为当前环境wifi名称 
+#define WIFI_PASSWD     "dfrobotsoftware"       //"dfrobotsoftware"改为当前环境wifi密码 
+#define IOT_USERNAME    "obloquser"             //"obloquser"改为物联网注册账号
+#define IOT_PASSWD      "20170307"              //"20170307"改为物联网注册密码
+...
+...
+  iot.publish("Button", "0");					//"Button"改为当前通信的物联网设备名
+...
 ```
 
 
@@ -353,14 +386,8 @@ void keyScan()
         hasPress = false;
     }
 }
-
 ```
 
-
-
-**如何将程序烧录到Arduino UNO**
-
-查看 [Arduino中文手册](http://www.dfrobot.com.cn/images/upload/File/20150129112804mdoxsq.pdf) 第1-13页，下载安装Arduino IDE和驱动，配置板卡和串口，输入程序源码，进行校验（也就是编译），最后下载（也就是烧录）。
 
 
 
@@ -402,13 +429,21 @@ void keyScan()
 
 本例中，设备Lamp会反复判断是否接到来自设备Button的新消息。当接收到数字”1“，打开LED；若接收到数字”0“，则关闭LED。如此循环检测执行。
 
-同上，使用代码时注意修改关于用户的一些信息，就可以烧录到控制LED模块/台灯的主控板中使用。
+
+
+**特别注意！**
+
+实际程序中必须修改程序中以下信息才能正常使用。
 
 ```c++
-#define WIFI_SSID       "DFSoftware"            //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
-#define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170307"              //物联网账号密码
+#define WIFI_SSID       "DFSoftware"            //"DFSoftware"改为当前环境wifi名称 
+#define WIFI_PASSWD     "dfrobotsoftware"       //"dfrobotsoftware"改为当前环境wifi密码 
+#define IOT_USERNAME    "obloquser"             //"obloquser"改为物联网注册账号
+#define IOT_PASSWD      "20170307"              //"20170307"改为物联网注册密码
+...
+...
+  iot.subscribe("Button", myButton);			//"Button"改为当前通信的物联网设备名
+...
 ```
 
 
@@ -673,18 +708,6 @@ void loop(void)
 
 
 
-打开Arduino IDE 的串口工具：
-
-![Serial](.\img\Serial.png)
-
-
-
-
-
-查看调试信息：
-
-![callBack](.\img\callBack.png)
-
 有经验的用户可能已经看出来了，这是回调函数的一种用法。
 
 下表是这段代码打印出来的日志信息的具体含义。请大家核对。
@@ -706,22 +729,16 @@ void loop(void)
 
 
 
-## 6. 故障处理
+### 附录
+
+**如何查看串口打印消息**
+
+打开Arduino IDE 的串口工具：
+
+![Serial](.\img\Serial.png)
 
 
 
-Q：模块通电后，板子的信号灯不亮
+查看调试信息：
 
-A：电源正负极接线有问题，检查接线
-
-
-
-Q：模块信号灯一直保持黄色常亮
-
-A：模块联网过程中卡在连接服务器的过程中，重启UNO主控板。
-
-
-
-Q：物联网Web端没有就收到发送过来的消息
-
-A： 检查程序中的设备名称和物联网Web端的设备名称是否保持一致
+![callBack](.\img\callBack.png)
