@@ -1,5 +1,5 @@
 /*********************************************************************
-* GravityPh.
+* DFRobot_simpleSend.
 *
 * Copyright (C)    2017   [DFRobot](http://www.dfrobot.com),
 * This Library is free software: you can redistribute it and/or modify
