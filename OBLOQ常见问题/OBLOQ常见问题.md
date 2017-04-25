@@ -48,7 +48,7 @@
 
 市面上常见的支持串口通信的主控板都可以，比如Arduino UNO主控板系列。
 
-![UNO](.\img\UNO.png)
+![UNO](./img/UNO.png)
 
 
 
@@ -160,9 +160,9 @@ void setup(void)
 
 可以参考教程中示例连接方法。如下图：
 
-![接收设备&led](.\img\接收设备&led.png)
+![接收设备&led](./img/接收设备&led.png)
 
-![OBLOQ发送设备](.\img\OBLOQ发送设备.png)
+![OBLOQ发送设备](./img/OBLOQ发送设备.png)
 
 
 
@@ -191,9 +191,9 @@ OBLOQ-web指的是obloq.dfrobot.com网站，包含数据发送、数据呈现、
 
 <img src="./img/OBLOQ工作间菜单.png">
 
-![Button](.\img\Button.png)
+![Button](./img/Button.png)
 
-![设备页面](.\img\设备页面.png)
+![设备页面](./img/设备页面.png)
 
 
 
@@ -201,9 +201,9 @@ OBLOQ-web指的是obloq.dfrobot.com网站，包含数据发送、数据呈现、
 
 进入工作间，点击进入某设备的设备界面，在筛选栏中选定条件对数据进行筛选，即可抽取出符合条件的数据，并且自动生成可视化数据图表。
 
-![设备数据页面](.\img\设备数据页面.png)
+![设备数据页面](./img/设备数据页面.png)
 
-![数据筛选页面](.\img\数据筛选页面.png)
+![数据筛选页面](./img/数据筛选页面.png)
 
 
 

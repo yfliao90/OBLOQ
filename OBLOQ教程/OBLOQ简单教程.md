@@ -15,7 +15,7 @@ OBLOQ包括一系列物联网产品：
 
 经过适当组合，在wifi环境下，设备通过OBLOQ模块就能连上互联网，按时发送设备状态或者接收远端控制指令。
 
-<img src=".\img\oblog banner-2-02.jpg" style="zoom:100%">
+<img src="./img/oblog banner-2-02.jpg" style="zoom:100%">
 
 形象点说，可以把OBLOQ模块看成一个“网卡”。
 
@@ -43,7 +43,7 @@ OBLOQ包括一系列物联网产品：
 
 实物图：
 
-<img src=".\img\OBLOQ实物2.jpg" width="400px">
+<img src="./img/OBLOQ实物2.jpg" width="400px">
 
 
 
@@ -76,11 +76,11 @@ OBLOQ包括一系列物联网产品：
 
 结构图：
 
-<img src=".\img\UNO R3.png" width="600px">
+<img src="./img/UNO R3.png" width="600px">
 
 各个接口的含义：
 
-<img src=".\img\UNO.png" style="zoom:100%">
+<img src="./img/UNO.png" style="zoom:100%">
 
 
 
@@ -94,13 +94,13 @@ OBLOQ包括一系列物联网产品：
 
 设备页面：
 
-![设备数据页面](.\img\设备数据页面.png)
+![设备数据页面](./img/设备数据页面.png)
 
 
 
 数据筛选页面：
 
-![数据筛选页面](.\img\数据筛选页面.png)
+![数据筛选页面](./img/数据筛选页面.png)
 
 
 
@@ -127,9 +127,9 @@ OBLOQ包括一系列物联网产品：
 
 注册账号并且登录，进入工作间。新建一个名叫“Button”的设备。
 
-![创建设备Button](.\img\添加新的设备.png)
+![创建设备Button](./img/添加新的设备.png)
 
-![创建设备Button](.\img\button.png)
+![创建设备Button](./img/button.png)
 
 ### 
 
@@ -169,7 +169,7 @@ OBLOQ包括一系列物联网产品：
 
 整体硬件结构示意图如下：
 
-<img src=".\img\oblog banner-2-02.jpg" style="zoom:100%">
+<img src="./img/oblog banner-2-02.jpg" style="zoom:100%">
 
 可以这样理解，
 $$
@@ -188,21 +188,21 @@ $$
 
 **发送端**
 
-<img src=".\img\OBLOQ发送设备.png" style="zoom:100%">
+<img src="./img/OBLOQ发送设备.png" style="zoom:100%">
 
 实际连线情况（实际使用还需要给主控板供电）：
 
-<img src=".\img\button硬件连接.jpg" style="zoom:100%">
+<img src="./img/button硬件连接.jpg" style="zoom:100%">
 
 
 
 **接收端**（当使用LED模块代替台灯时）
 
-<img src=".\img\接收设备&led.png" style="zoom:100%">
+<img src="./img/接收设备&led.png" style="zoom:100%">
 
 实际连线情况（实际使用还需要给主控板供电）：
 
-<img src=".\img\LED模块硬件连接.jpg" style="zoom:100%">
+<img src="./img/LED模块硬件连接.jpg" style="zoom:100%">
 
 如果仅使用**LED模块**，按照上图连接，就能完成全部硬件搭建。
 
@@ -212,27 +212,27 @@ $$
 
 台灯的插座有两根线，一根火线一根地线。将其中一根线剪断，串连接上继电器，一端接入NO（常开），一端接入COM（公共端）。如果不想破坏台灯的电线，也可以找根平时不用的带插头的线来改装，如下图：
 
-![继电器连线](.\img\继电器连线.png)
+![继电器连线](./img/继电器连线.png)
 
 
 
 实物连接图：
 
-<img src=".\img\给台灯外接继电器.jpg" style="zoom:100%">
+<img src="./img/给台灯外接继电器.jpg" style="zoom:100%">
 
-<img src=".\img\继电器实物1.jpg" style="zoom:100%">
+<img src="./img/继电器实物1.jpg" style="zoom:100%">
 
 
 
 **2. 将烧录好接收端程序的Arduino UNO连接到继电器，连线的引脚和示意图相同**
 
-<img src=".\img\连继电器.jpg" style="zoom:100%">
+<img src="./img/连继电器.jpg" style="zoom:100%">
 
-<img src=".\img\接收设备&led.png" style="zoom:100%">
+<img src="./img/接收设备&led.png" style="zoom:100%">
 
 **3. 接通台灯电源，插入台灯插座即可。接通Arduino UNO电源，可以USB供电，也可以电池供电。**
 
-<img src=".\img\接收端实际连线.jpg" style="zoom:100%">
+<img src="./img/接收端实际连线.jpg" style="zoom:100%">
 
 
 
@@ -405,23 +405,23 @@ void keyScan()
 
 1. 登录OBLOQ-web，在设备列表中找到按键设备：
 
-![Button设备](.\img\Button.png)
+![Button设备](./img/Button.png)
 
 
 
 2. 点击进入，可查看**设备详细信息**：
 
-![设备消息](.\img\button设备界面.png)
+![设备消息](./img/button设备界面.png)
 
 
 
 3. 发送消息。在“发送新消息”栏中输入消息内容，再点击后面的**发送**按钮即可。本例中，发送消息“0”关闭台灯，发送消息“1”打开台灯。
 
-![发送消息1](.\img\发送消息2.png)
+![发送消息1](./img/发送消息2.png)
 
 4. 查看消息是否发送成功。在点击发送消息按钮后，如果发送成功，消息列表里面将出现刚才输入的消息。完成接收端搭建后，此命令可让远方的LED灯（或台灯）打开或关闭。
 
-![消息发送成功](.\img\button设备发送消息成功.png)
+![消息发送成功](./img/button设备发送消息成功.png)
 
 
 
@@ -541,15 +541,15 @@ void loop(void)
 
 我们按照步骤写好程序，烧录固件，最后连接好设备，可以看到OBLOQ模块绿色的LED小灯常亮，表示设备正常工作：
 
-![开灯演示](.\img\实际测试.jpg)
+![开灯演示](./img/实际测试.jpg)
 
 按下按键，打开台灯：
 
-![开灯演示](.\img\按下按键打开台灯.jpg)
+![开灯演示](./img/按下按键打开台灯.jpg)
 
 按下按键，关闭台灯：
 
-![开灯演示](.\img\按下按键关闭台灯.jpg)
+![开灯演示](./img/按下按键关闭台灯.jpg)
 
 
 
@@ -741,10 +741,10 @@ void loop(void)
 
 打开Arduino IDE 的串口工具：
 
-![Serial](.\img\Serial.png)
+![Serial](./img/Serial.png)
 
 
 
 查看调试信息：
 
-![callBack](.\img\callBack.png)
+![callBack](./img/callBack.png)
