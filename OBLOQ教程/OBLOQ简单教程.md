@@ -442,14 +442,11 @@ void keyScan()
 实际程序中必须修改程序中以下信息才能正常使用。
 
 ```c++
-#define WIFI_SSID       "DFSoftware"            //"DFSoftware"改为当前环境wifi名称 
-#define WIFI_PASSWD     "dfrobotsoftware"       //"dfrobotsoftware"改为当前环境wifi密码 
-#define IOT_USERNAME    "obloquser"             //"obloquser"改为物联网注册账号
-#define IOT_PASSWD      "20170307"              //"20170307"改为物联网注册密码
-...
-...
-  iot.subscribe("Button", myButton);			//"Button"改为当前通信的物联网设备名
-...
+WIFI_SSID       "DFSoftware"            //"DFSoftware"改为当前环境wifi名称 
+WIFI_PASSWD     "dfrobotsoftware"       //"dfrobotsoftware"改为当前环境wifi密码 
+IOT_USERNAME    "obloquser"             //"obloquser"改为物联网注册账号
+IOT_PASSWD      "20170307"              //"20170307"改为物联网注册密码
+iot.subscribe("MyButton", eventHandle);	//"Button"改为当前通信的物联网设备名
 ```
 
 
@@ -457,63 +454,30 @@ void keyScan()
 **具体代码**
 
 ```c++
-/*********************************************************************
-* DFRobot_advancedReceive.
-*
-* Copyright (C)    2017   [DFRobot](http://www.dfrobot.com),
-* This Library is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Description:
-* The IOT device receives the number 1, turns on the LED, otherwise turns off the LED
-* 
-* author  :  Jason
-* version :  V1.0
-* date    :  2017-03-06
-**********************************************************************/
-
-
-#include <SoftwareSerial.h>
 #include "Iot.h"
 
-void * eventCb(uint8_t type, const char *data, uint16_t len);
-Iot iot(eventCb);                          //当物联网既需要接收数据有需要发送数据的时候，需要传入回调函数
-
-int ledPin = 2;
-int tempData = 0;                          //缓存接收的整型数据
-
+Iot iot(eventCb);                      //当物联网既需要接收数据有需要发送数据的时候，需要传入回调函数
 SoftwareSerial mySerial(10, 11);         // RX, TX
-
-#define WIFI_SSID       "DFSoftware"            //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
-#define IOT_USERNAME    "obloquser"             //物联网账号
-#define IOT_PASSWD      "20170307"              //物联网账号密码
-
-//连接状态回调函数
-void * eventCb(uint8_t eventType, const char *data, uint16_t len)
+void * eventHandle(const char *data, uint16_t len)
 {
+   switch(atoi(data))//将字符串转换成数字
+    {
+      case 1:
+        digitalWrite(2,HIGH);
+        break;
+      case 2:
+        digitalWrite(2,LOW);
+     	 break;
+    }
 }
-
-void * myButton(const char *data, uint16_t len)
-{
-  tempData = atoi(data);                   //字符串转整型,浮点型，长整形...等atoi(),atof(),atol()...
-  if(tempData == 1)
-    digitalWrite(ledPin,HIGH);                 //打开LED小灯
-  if(tempData == 0)
-    digitalWrite(ledPin,LOW);                  //关闭LED小灯 
-}
-
 void setup(void)
 { 
   mySerial.begin(38400);
   pinMode(ledPin,OUTPUT);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
-  iot.subscribe("Button", myButton);
+  iot.setup(mySerial, "WIFI_SSID", "WIFI_PASSWD","IOT_USERNAME", "IOT_PASSWD");
+  iot.subscribe("MyButton", eventHandle);	//MyButton is Device name
   iot.start();
 }
-
 void loop(void)
 {
 	iot.loop();
