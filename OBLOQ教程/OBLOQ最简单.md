@@ -107,7 +107,7 @@ $$
 
 **连线图示意**
 
-<img src="./img/接收设备&led.png" style="zoom:100%">
+![最简单接收设备](./img/最简单接收设备.png)
 
 
 
@@ -136,6 +136,7 @@ void * eventHandle(const char *data, uint16_t len)
       case 2:
         digitalWrite(13,LOW);      //关闭小灯
         break;
+      default:break;
     }
 }
 
@@ -151,7 +152,6 @@ void loop(void)
 {
   iot.loop();
 }
-
 ```
 
 
