@@ -115,20 +115,48 @@ $$
 
 完成硬件搭建后，为了能让这些模块和板子运作起来，需要给主控板写入运作逻辑的程序。具体代码如下：
 
+修改样例代码中的测试wifi和测试OBLOQ-web账号，改成自己的wifi和账号即可：
 
+```c++
+iot.setup(Serial, "WIFI_SSID", "WIFI_PASSWD","IOT_USERNAME", "IOT_PASSWD");
+```
 
 **具体代码**
 
 ```c++
-#include <SoftwareSerial.h>
 #include "Iot.h"
+Iot iot;   
+void * eventHandle(const char *data, uint16_t len)
+{
+   switch(atoi(data))              //将物联网发送字符串转换成数字
+    {
+      case 1:
+        digitalWrite(13,HIGH);     //打开小灯
+        break;
+      case 2:
+        digitalWrite(13,LOW);      //关闭小灯
+        break;
+    }
+}
 
-xxx
+void setup(void)
+{ 
+  Serial.begin(38400);
+  pinMode(13,OUTPUT);
+  iot.setup(Serial, "DFSoftware", "dfrobotsoftware","test", "test");
+  iot.subscribe("Button", eventHandle);   //Button是物联网设备名
+  iot.start();
+}
+void loop(void)
+{
+  iot.loop();
+}
+
 ```
 
 
 
-烧录完成后，需要按下主控板上的“Reset”按键重启主控板，保证固件正常使用。
+烧录前确保UNO的Rx(0),Tx(1)引脚和OBLOQ断开连接，因为这里用的是硬件串口Rx(0),Tx(1)通信，不断开连接会造成程序烧录出错，高级教程通过使用软串口解决这个问题。保烧录完成后，连接OBLOQ模块的Rx,Tx，再按下主控板上的“Reset”按键重启主控板，等待模块联网即可。
 
 
 
@@ -136,9 +164,9 @@ xxx
 
 现在看下这个项目的具体效果吧。
 
-1. 保持硬件设备上电状态。正常工作的OBLOQ模块绿色LED常亮。
-2. 登录OBLOQ-web工作间，查看设备。
-3. xxxx如何输入程序，查看LED小灯亮灭。
+1. 保持硬件设备上电状态。OBLOQ模块正常工作状态下LED指示灯显示绿色常亮。
+2. 登录OBLOQ-web工作间，查看设备Button是否存在，若不存在，创建一个Button设备。
+3. 在Button设备消息里面发送数字“1”，板载连接在13号引脚的小灯会被点亮，发送数字“2”，小灯熄灭。
 
 
 
@@ -151,8 +179,7 @@ xxx
 
 * 程序中的wifi账号（SSID）、密码，物联网账号、密码、设备名称要保证书写的正确性
 * 硬件连线要正确，尤其注意实际使用的引脚和程序是否能对应
-
-
+* 当信号灯保持红色，蓝色或者黄色不变的时候，复位UNO开发板。
 
 
 
