@@ -120,7 +120,7 @@ $$
 注意：根据自己的环境信息修改样例代码中的wifi信息和测试OBLOQ网站账号。
 
 ```c++
-iot.setup(Serial, "WIFI_SSID", "WIFI_PASSWD","IOT_USERNAME", "IOT_PASSWD");
+iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
 ```
 
 **具体代码**
@@ -146,8 +146,8 @@ void setup(void)
 { 
   Serial.begin(38400);
   pinMode(13,OUTPUT);
-  iot.setup(Serial, "DFSoftware", "dfrobotsoftware","test", "test");
-  iot.subscribe("Button", eventHandle);   //Button是物联网设备名
+  iot.setup(Serial, "DFSoftware", "dfrobotsoftware","ryHxUYFeW", "SyPZIFKxZ|BJgD-IKYeZ");
+  iot.subscribe("rkX4LYFeZ", eventHandle);   //rkX4LYFeZ是物联网设备名
   iot.start();
 }
 void loop(void)
