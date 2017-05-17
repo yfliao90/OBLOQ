@@ -12,21 +12,35 @@
 
 第一步，我们需要建立好信息中转站。换句话说，我们将在OBLOQ网站里新建一个按键设备，用来接收发送端信息，并将信息转发到接收端。
 
-**创建设备：Button**
+**创建设备：设备一**
 
-登录[OBLOQ][http://obloq.dfrobot.com]官网，注册账号。进入工作间。新建一个名叫“Button”的设备。
+登录OBLOQ官网，注册账号。进入工作间。观察到左侧的用户信息：
+
+物联网ID (clientID): "ryHxUYFeW"
+
+物联网Token (devicesToken): "SyPZIFKxZ|BJgD-IKYeZ" 
+
+![用户信息](.\img\IDToken.png)
+
+在右侧工作界面中，新建一个设备，默认名字“设备一”。
+
+观察到新设备自动生成一个Topic，作为设备唯一可识别码。
+
+当前设备Token: "rkX4LYFeZ"
 
 ![创建设备Button](.\img\添加新的设备.png)
 
-![创建设备Button](.\img\button.png)
+![创建设备Button](.\img\设备1.png)
 
 ### 
 
 为了稍后编程需要，记下这些关键信息，例如：
 
-- OBLOQ网站账号：obloquser
-- OBLOQ网站密码：20170307
-- 设备名称：Button
+- clientID：ryHxUYFeW
+- devicesToken：SyPZIFKxZ|BJgD-IKYeZ
+- Topic：rkX4LYFeZ
+
+
 
 
 
@@ -252,7 +266,7 @@ void keyScan()
 
 1. 登录OBLOQ网站，在设备列表中找到按键设备：
 
-![Button设备](.\img\Button.png)
+![设备1](.\img\设备1.png)
 
 
 
@@ -280,7 +294,7 @@ void keyScan()
 
 接收端的程序主要是循环检测监听的设备是否发出信息，一旦该设备发出信息，将根据信息内容执行相应任务。
 
-本例中，设备Lamp会反复判断是否接到来自设备Button的新消息。当接收到数字”1“，打开LED；若接收到数字”0“，则关闭LED。如此循环检测执行。
+本例中，设备Lamp会反复判断是否接到来自“设备一”的新消息。当接收到数字”1“，打开LED；若接收到数字”0“，则关闭LED。如此循环检测执行。
 
 
 
@@ -382,7 +396,7 @@ void loop(void)
 
 如果你并没有看到理想中的结果，检查一下是不是在下面的哪些步骤出了一些小问题：
 
-* 程序中的wifi账号（SSID）、密码，OBLOQ网站账号、密码、设备名称要保证书写的正确性；
+* 程序中的wifi账号（SSID）、密码，clientID、devicesToken、Topic要保证书写的正确性；
 * 硬件连线要正确，尤其注意实际使用的引脚和程序是否能对应；
 * 当信号灯保持红色，蓝色或者黄色不变的时候，复位UNO开发板。
 
