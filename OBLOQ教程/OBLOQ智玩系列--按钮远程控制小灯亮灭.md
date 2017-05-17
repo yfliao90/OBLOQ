@@ -1,4 +1,4 @@
-# OBLOQ智玩系列
+# OBLOQ智玩系列-按钮远程控制小灯亮灭
 
 ## 0. 项目简介
 
@@ -553,7 +553,6 @@ void loop(void)
 | **EVENT_CODE_SERVER: server disconnect** | 服务器断开连接      |
 | **EVENT_CODE_SERVER: username or passwd error** | 物联网账号或密码错误   |
 | **eventType: has new Version**           | 有新固件         |
-| **EVENT_CODE_WIFI: wifi connect： **      | wifi连接成功     |
 
 
 
