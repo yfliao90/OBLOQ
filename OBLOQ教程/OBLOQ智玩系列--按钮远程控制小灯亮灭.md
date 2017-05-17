@@ -139,13 +139,13 @@
 实际程序中必须修改程序中以下信息才能正常使用。
 
 ```c++
-#define WIFI_SSID       "DFSoftware"            //"DFSoftware"改为当前环境wifi名称 
-#define WIFI_PASSWD     "dfrobotsoftware"       //"dfrobotsoftware"改为当前环境wifi密码 
-#define IOT_USERNAME    "obloquser"             //"obloquser"改为物联网注册账号
-#define IOT_PASSWD      "20170307"              //"20170307"改为物联网注册密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 ...
 ...
-  iot.publish("Button", "0");					//"Button"改为当前通信的物联网设备名
+iot.publish("rkX4LYFeZ", tempString);  			//"rkX4LYFeZ"改为当前通信的设备Topic
 ...
 ```
 
@@ -162,10 +162,10 @@ Iot iot;
 
 SoftwareSerial mySerial(10, 11);         // RX, TX
 
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
-#define IOT_USERNAME    "test"             //物联网账号
-#define IOT_PASSWD      "test"             //物联网账号密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 
 char *tempString =      "string";
 int normalVoltage = 0;                     //按键防抖动的相关参数
@@ -181,7 +181,7 @@ void setup(void)
 {
   mySerial.begin(38400);                   //打开软串口，波特率必须是38400
   pinMode(buttonPin,INPUT);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
+  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
   iot.start();
 }
  
@@ -192,11 +192,11 @@ void loop(void)
   {
     if(sendFlag){
       itoa(1,tempString,10);                 //方法一：将整型转换成字符串，然后再发送
-      iot.publish("Button", tempString);    
+      iot.publish("rkX4LYFeZ", tempString);    
       sendFlag = false;
     }
     else{
-      iot.publish("Button", "0");             //方法二：直接发送字符串0也可以
+      iot.publish("rkX4LYFeZ", "0");             //方法二：直接发送字符串0也可以
       sendFlag = true;
     }    
   }
@@ -289,13 +289,13 @@ void keyScan()
 实际程序中必须修改程序中以下信息才能正常使用。
 
 ```c++
-#define WIFI_SSID       "DFSoftware"            //"DFSoftware"改为当前环境wifi名称 
-#define WIFI_PASSWD     "dfrobotsoftware"       //"dfrobotsoftware"改为当前环境wifi密码 
-#define IOT_USERNAME    "obloquser"             //"obloquser"改为物联网注册账号
-#define IOT_PASSWD      "20170307"              //"20170307"改为物联网注册密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 ...
 ...
-  iot.subscribe("Button", myButton);			//"Button"改为当前通信的物联网设备名
+iot.subscribe("rkX4LYFeZ", eventHandle);        //"rkX4LYFeZ"改为当前通信的设备Topic
 ...
 ```
 
@@ -309,16 +309,19 @@ void keyScan()
 #include "Iot.h"
 
 Iot iot;                 
-int ledPin = 2;                            //led小灯引脚
-SoftwareSerial mySerial(10, 11);           // RX, TX
 
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
-#define IOT_USERNAME    "test"             //物联网账号
-#define IOT_PASSWD      "test"             //物联网账号密码
+int ledPin = 2;                            //led小灯引脚
+
+SoftwareSerial mySerial(10, 11);         // RX, TX
+
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 
 void * eventHandle(const char *data, uint16_t len)
-{  
+{
+  
    switch(atoi(data))                      //将物联网发送字符串转换成数字
     {
       case 0:
@@ -329,14 +332,15 @@ void * eventHandle(const char *data, uint16_t len)
         break;
       default:break;
     }
+  
 }
 
 void setup(void)
 { 
   mySerial.begin(38400);
   pinMode(ledPin,OUTPUT);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
-  iot.subscribe("Button", eventHandle);
+  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
+  iot.subscribe("rkX4LYFeZ", eventHandle);
   iot.start();
 }
 
