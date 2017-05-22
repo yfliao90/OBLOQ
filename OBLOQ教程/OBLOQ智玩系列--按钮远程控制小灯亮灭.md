@@ -463,10 +463,10 @@ Iot iot(eventCb);
 
 SoftwareSerial mySerial(10, 11);         // RX, TX
 
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
-#define IOT_USERNAME    "test"             //物联网账号
-#define IOT_PASSWD      "test"             //物联网账号密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 
 unsigned long long sendTime = 0;
 bool sendFlag = true;
@@ -532,8 +532,8 @@ void setup(void)
   mySerial.begin(38400);
   while(!Serial);
   iot.setDbgSerial(Serial);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
-  iot.subscribe("Button", myTest);          
+  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
+  iot.subscribe("rkX4LYFeZ", myTest);          
   iot.start();
 }
 
@@ -544,10 +544,10 @@ void loop(void)
 		sendTime = millis();
 		if(sendFlag){
       sendFlag = false;
-			iot.publish("Button", "down");
+			iot.publish("rkX4LYFeZ", "down");
 		}else{
       sendFlag = true;
-			iot.publish("Button", "up");
+			iot.publish("rkX4LYFeZ", "up");
 		}
 	}
 	iot.loop();
