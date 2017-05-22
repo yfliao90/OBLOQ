@@ -1,4 +1,12 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
 <body>
+
 <h3>0. 项目简介</h3>
 
 <p>这次的项目，我们将用OBLOQ实现一个按键远程无线控制一台台灯的亮灭。</p>
@@ -11,18 +19,31 @@
 
 <p>第一步，我们需要建立好信息中转站。换句话说，我们将在OBLOQ网站里新建一个按键设备，用来接收发送端信息，并将信息转发到接收端。</p>
 
-<p><strong>创建设备：Button</strong></p>
+<p><strong>创建设备：设备一</strong></p>
 
-<p>登录OBLOQ官网，注册账号。进入工作间。新建一个名叫“Button”的设备。</p>
+<p>登录OBLOQ官网，注册账号。进入工作间。观察到左侧的用户信息：</p>
 
-<p><img src="http://ojc9ndn3w.bkt.clouddn.com/FgKBhIqJZWNW-rFej9EOHx062JTx" style="display: block; margin: 0 auto;"><br/></p>
-<p><img src="http://ojc9ndn3w.bkt.clouddn.com/FmqPa8d5fc3Ee945lATrn-FJBSk-" style="display: block; margin: 0 auto;"><br/></p>
+<p>物联网ID (clientID): "ryHxUYFeW"</p>
+
+<p>物联网Token (devicesToken): "SyPZIFKxZ|BJgD-IKYeZ"</p> 
+
+<p style="text-align: center"><img src="http://ojc9ndn3w.bkt.clouddn.com/Foyuo8p3gA2sywnQBV8mhIWBKtyf"><br/></p>
+
+<p>在右侧工作界面中，新建一个设备，默认名字"设备一"。</p>
+
+<p>观察到新设备自动生成一个Topic，作为设备唯一可识别码。</p>
+
+<p>当前设备Token: "rkX4LYFeZ"</p>
+
+<p style="text-align: center"><img src="http://ojc9ndn3w.bkt.clouddn.com/FgtI7HIEBT24b0o5Mmq42ScFGQy2"><br/></p>
+<p style="text-align: center"><img src="http://ojc9ndn3w.bkt.clouddn.com/Fsmfjn5_IWVObW86VC-ekLjtRnQQ"><br/></p>
+
 
 <p>为了稍后编程需要，记下这些关键信息，例如：</p>
 
-<p>1. OBLOQ网站账号：obloquser</p>
-<p>2. OBLOQ网站密码：20170307</p>
-<p>3. 设备名称：Button</p>
+<p>1. clientID：ryHxUYFeW</p>
+<p>2. devicesToken：SyPZIFKxZ|BJgD-IKYeZ</p>
+<p>3. Topic：rkX4LYFeZ</p>
 
 <p></p>
 
@@ -32,7 +53,7 @@
 
 <p><strong>硬件清单</strong></p>
 
-<table border="1">
+<table border="1" align="center">
   <tr>
     <th>名称</th>
     <th>数量</th>
@@ -61,7 +82,7 @@
 <p></p>
 
 <p>*关于主控板，这里挑选Arduino UNO及其扩展板作为例子讲解，其他兼容的主控板也可以使用。</p>
-<p>*如果只有1套OBLOQ模块和主控，这套系统也是能实现的。此时由于没有多余的主控和OBLOQ模块去支持“按键”，我们依然能够在OBLOQ网站网站中创建一个虚拟按键功能，并用虚拟按键控制远端台灯的亮灭。</p>
+<p>*如果只有1套OBLOQ模块和主控，这套系统也是能实现的。此时由于没有多余的主控和OBLOQ模块去支持"按键"，我们依然能够在OBLOQ网站网站中创建一个虚拟按键功能，并用虚拟按键控制远端台灯的亮灭。</p>
 <p>*台灯和LED模块都可以作为被操控设备，任选一个即可。如果想适用于实际生活，推荐使用台灯。</p>
 
 
@@ -127,7 +148,7 @@
 
 <p>发送端的程序主要是循环检测事件是否触发，一旦事件触发，就向OBLOQ网站发送信号，OBLOQ网站则向相应联网设备转发此信号。</p>
 
-<p>本例中，程序会反复检测按键是否按下，当检测到按键第一次按下的时候，OBLOQ系统向设备Lamp发送消息”1“，当检测到按键第二次按下的时候，向设备Lamp发送消息”0“，如此循环检测执行。</p>
+<p>本例中，程序会反复检测按键是否按下，当检测到按键第一次按下的时候，OBLOQ系统向设备Lamp发送消息"1"，当检测到按键第二次按下的时候，向设备Lamp发送消息"0"，如此循环检测执行。</p>
 
 <p><strong>特别注意！</strong></p>
 
@@ -135,13 +156,13 @@
 
 <p></p><pre>
 
-#define WIFI_SSID       "DFSoftware"            //"DFSoftware"改为当前环境wifi名称 
-#define WIFI_PASSWD     "dfrobotsoftware"       //"dfrobotsoftware"改为当前环境wifi密码 
-#define IOT_USERNAME    "obloquser"             //"obloquser"改为物联网注册账号
-#define IOT_PASSWD      "20170307"              //"20170307"改为物联网注册密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 ...
 ...
-  iot.publish("Button", "0");					//"Button"改为当前通信的物联网设备名
+iot.publish("rkX4LYFeZ", tempString);  			//"rkX4LYFeZ"改为当前通信的设备Topic
 ...
 </pre>
 <p></p>
@@ -151,18 +172,18 @@
 
 <pre>
 
-#include <Arduino.h>
-#include <SoftwareSerial.h>
+#include &lt;Arduino.h&gt;
+#include &lt;SoftwareSerial.h&gt;
 #include "Iot.h"
 
 Iot iot;   
 
 SoftwareSerial mySerial(10, 11);         // RX, TX
 
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
-#define IOT_USERNAME    "test"             //物联网账号
-#define IOT_PASSWD      "test"             //物联网账号密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 
 char *tempString =      "string";
 int normalVoltage = 0;                     //按键防抖动的相关参数
@@ -178,7 +199,7 @@ void setup(void)
 {
   mySerial.begin(38400);                   //打开软串口，波特率必须是38400
   pinMode(buttonPin,INPUT);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
+  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
   iot.start();
 }
  
@@ -189,11 +210,11 @@ void loop(void)
   {
     if(sendFlag){
       itoa(1,tempString,10);                 //方法一：将整型转换成字符串，然后再发送
-      iot.publish("Button", tempString);    
+      iot.publish("rkX4LYFeZ", tempString);    
       sendFlag = false;
     }
     else{
-      iot.publish("Button", "0");             //方法二：直接发送字符串0也可以
+      iot.publish("rkX4LYFeZ", "0");             //方法二：直接发送字符串0也可以
       sendFlag = true;
     }    
   }
@@ -231,32 +252,32 @@ void keyScan()
         isClick = true;
         hasPress = false;
     }
-}</pre>
+}
+</pre>
 <p></p>
 
-<p>程序烧录完成后，为了确保系统能按照新固件的逻辑正确执行，按下主控板上的“Reset”按键重启主控板，完成固件重启。</p>
+<p>程序烧录完成后，为了确保系统能按照新固件的逻辑正确执行，按下主控板上的"Reset"按键重启主控板，完成固件重启。</p>
 
 <p><strong>没有实物按键模块，我们可以用虚拟按键</strong></p>
 
 <p>如果只有一套OBLOQ模块和主控，按键功能依旧能够通过在OBLOQ网站虚拟发送按键开关的信息实现。</p>
 
-<p>如果你没有“按键”实物，可以按照如下方法操作，给出虚拟“按键”信号。</p>
+<p>如果你没有"按键"实物，可以按照如下方法操作，给出虚拟"按键"信号。</p>
 
 <p>1. 登录OBLOQ网站，在设备列表中找到按键设备：</p>
 
-<p><img src="http://ojc9ndn3w.bkt.clouddn.com/FmqPa8d5fc3Ee945lATrn-FJBSk-" style="display: block; margin: 0 auto;"><br/></p>
-
+<p><img src="http://ojc9ndn3w.bkt.clouddn.com/Fsmfjn5_IWVObW86VC-ekLjtRnQQ" style="display: block; margin: 0 auto;"><br/></p>
 <p>2. 点击进入，可查看<strong>设备详细信息</strong>：</p>
 
-<p><img src="http://ojc9ndn3w.bkt.clouddn.com/FvXiaJ-iLU3FHqQKuqmQnI-NmtKg" width="800px" style="display: block; margin: 0 auto;"><br/></p>
+<p><img src="http://ojc9ndn3w.bkt.clouddn.com/FnTa1Ux5-FrHk2TjdCQm7PK_LvBD" width="800px" style="display: block; margin: 0 auto;"><br/></p>
 
-<p>3. 发送消息。在“发送新消息”栏中输入消息内容，再点击后面的<strong>发送</strong>按钮即可。本例中，发送消息“0”关闭台灯，发送消息“1”打开台灯。</p>
+<p>3. 发送消息。在"发送新消息"栏中输入消息内容，再点击后面的<strong>发送</strong>按钮即可。本例中，发送消息"0"关闭台灯，发送消息"1"打开台灯。</p>
 
-<p><img src="http://ojc9ndn3w.bkt.clouddn.com/FoChN4rgfL9uZ0h_iM2s_eMFxEj6" width="800px" style="display: block; margin: 0 auto;"><br/></p>
+<p><img src="http://ojc9ndn3w.bkt.clouddn.com/FvJtTKrbTA-QXinaTGMUZoerhqtD" width="800px" style="display: block; margin: 0 auto;"><br/></p>
 
 <p>4. 查看消息是否发送成功。在点击发送消息按钮后，如果发送成功，消息列表里面将出现刚才输入的消息。完成接收端搭建后，此命令可让远方的LED灯（或台灯）打开或关闭。</p>
 
-<p><img src="http://ojc9ndn3w.bkt.clouddn.com/FiKaHOPr3HpcH67KgK1R0MyJ-JZF"width="800px" style="display: block; margin: 0 auto;"><br/></p>
+<p><img src="http://ojc9ndn3w.bkt.clouddn.com/FhGHFjsnPxWdLjnE17ejj8irp563"width="800px" style="display: block; margin: 0 auto;"><br/></p>
 
 <h3>3.2 接收端程序——台灯/LED模块（Lamp）</h3>
 
@@ -264,7 +285,7 @@ void keyScan()
 
 <p>接收端的程序主要是循环检测监听的设备是否发出信息，一旦该设备发出信息，将根据信息内容执行相应任务。</p>
 
-<p>本例中，设备Lamp会反复判断是否接到来自设备Button的新消息。当接收到数字”1“，打开LED；若接收到数字”0“，则关闭LED。如此循环检测执行。</p>
+<p>本例中，程序会反复检测按键是否按下，当检测到按键第一次按下的时候，OBLOQ系统向设备Lamp发送消息"1"，当检测到按键第二次按下的时候，向设备Lamp发送消息"0"，如此循环检测执行。</p>
 
 <p><strong>特别注意！</strong></p>
 
@@ -272,13 +293,13 @@ void keyScan()
 
 
 <pre>
-#define WIFI_SSID       "DFSoftware"            //"DFSoftware"改为当前环境wifi名称 
-#define WIFI_PASSWD     "dfrobotsoftware"       //"dfrobotsoftware"改为当前环境wifi密码 
-#define IOT_USERNAME    "obloquser"             //"obloquser"改为物联网注册账号
-#define IOT_PASSWD      "20170307"              //"20170307"改为物联网注册密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 ...
 ...
-  iot.subscribe("Button", myButton);			//"Button"改为当前通信的物联网设备名
+iot.subscribe("rkX4LYFeZ", eventHandle);        //"rkX4LYFeZ"改为当前通信的设备Topic
 ...
 </pre>
 
@@ -286,21 +307,24 @@ void keyScan()
 
 <pre>
 
-#include <Arduino.h>
-#include <SoftwareSerial.h>
+#include &lt;Arduino.h&gt;
+#include &lt;SoftwareSerial.h&gt;
 #include "Iot.h"
 
 Iot iot;                 
-int ledPin = 2;                            //led小灯引脚
-SoftwareSerial mySerial(10, 11);           // RX, TX
 
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
-#define IOT_USERNAME    "test"             //物联网账号
-#define IOT_PASSWD      "test"             //物联网账号密码
+int ledPin = 2;                            //led小灯引脚
+
+SoftwareSerial mySerial(10, 11);         // RX, TX
+
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 
 void * eventHandle(const char *data, uint16_t len)
-{  
+{
+  
    switch(atoi(data))                      //将物联网发送字符串转换成数字
     {
       case 0:
@@ -311,14 +335,15 @@ void * eventHandle(const char *data, uint16_t len)
         break;
       default:break;
     }
+  
 }
 
 void setup(void)
 { 
   mySerial.begin(38400);
   pinMode(ledPin,OUTPUT);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
-  iot.subscribe("Button", eventHandle);
+  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
+  iot.subscribe("rkX4LYFeZ", eventHandle);
   iot.start();
 }
 
@@ -328,7 +353,7 @@ void loop(void)
 }
 </pre>
 
-<p>固件写好后，同发送端程序一样，向控制台灯/LED模块的主控板中烧入即可。程序烧录完成后，为了确保系统能按照新固件的逻辑正确执行，按下主控板上的“Reset”按键重启主控板，完成固件重启。</p>
+<p>固件写好后，同发送端程序一样，向控制台灯/LED模块的主控板中烧入即可。程序烧录完成后，为了确保系统能按照新固件的逻辑正确执行，按下主控板上的"Reset"按键重启主控板，完成固件重启。</p>
 
 <h3>4. 结果展示</h3>
 
@@ -353,13 +378,13 @@ void loop(void)
 
 <p>如果你并没有看到理想中的结果，检查一下是不是在下面的哪些步骤出了一些小问题：</p>
 
-<p>1. 程序中的wifi账号（SSID）、密码，OBLOQ网站账号、密码、设备名称要保证书写的正确性；</p>
+<p>1. 程序中的wifi账号（SSID）、密码，clientID、devicesToken、Topic要保证书写的正确性；</p>
 <p>2. 硬件连线要正确，尤其注意实际使用的引脚和程序是否能对应；</p>
 <p>3. 当信号灯保持红色，蓝色或者黄色不变的时候，复位UNO开发板。</p>
 
 <h3>5. 总结和拓展</h3>
 
-<p>我们通过完成“按键联网控制小灯”这个简单的小项目，了解了如何利用OBLOQ模块制作联网设备，包括可以发送信息的“发送端设备”（按键），和接收信息并执行指令的“接送端设备”（台灯）。</p>
+<p>我们通过完成"按键联网控制小灯"这个简单的小项目，了解了如何利用OBLOQ模块制作联网设备，包括可以发送信息的"发送端设备"（按键），和接收信息并执行指令的"接送端设备"（台灯）。</p>
 
 <p>步骤总结：</p>
 
@@ -367,7 +392,7 @@ void loop(void)
 
 <p>如果顺利的话，项目到这里就算完成了。</p>
 
-<p>然而，意外情况也是可能发生的。如果你遇到了不可判别原因的问题，可以尝试下面这段代码“检测故障”。</p>
+<p>然而，意外情况也是可能发生的。如果你遇到了不可判别原因的问题，可以尝试下面这段代码"检测故障"。</p>
 
 <p>将这段代码编译后，烧入疑似故障的硬件相连的主控板里，重启运行固件，查看串口打印出的消息，我们能够查看OBLOQ模块连接wifi和物联网服务器的连接状态，比如OBLOQ模块有没有连接成功。</p>
 
@@ -398,7 +423,7 @@ void loop(void)
 * date    :  2017-03-06
 *****************************************************************************************/
 
-#include <SoftwareSerial.h>
+#include &lt;SoftwareSerial.h&gt;
 #include "Iot.h"
 
 #define IOTDBG(...) if(1){Serial.print("["); Serial.print(__FUNCTION__); Serial.print("(): "); Serial.print(__LINE__); Serial.print(" ] "); Serial.println(__VA_ARGS__);}
@@ -407,10 +432,10 @@ Iot iot(eventCb);
 
 SoftwareSerial mySerial(10, 11);         // RX, TX
 
-#define WIFI_SSID       "DFSoftware"       //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"  //wifi密码
-#define IOT_USERNAME    "test"             //物联网账号
-#define IOT_PASSWD      "test"             //物联网账号密码
+#define WIFI_SSID       "DFSoftware"            //wifi名称
+#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
+#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
+#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
 
 unsigned long long sendTime = 0;
 bool sendFlag = true;
@@ -476,8 +501,8 @@ void setup(void)
   mySerial.begin(38400);
   while(!Serial);
   iot.setDbgSerial(Serial);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, IOT_USERNAME, IOT_PASSWD);
-  iot.subscribe("Button", myTest);          
+  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
+  iot.subscribe("rkX4LYFeZ", myTest);          
   iot.start();
 }
 
@@ -488,10 +513,10 @@ void loop(void)
 		sendTime = millis();
 		if(sendFlag){
       sendFlag = false;
-			iot.publish("Button", "down");
+			iot.publish("rkX4LYFeZ", "down");
 		}else{
       sendFlag = true;
-			iot.publish("Button", "up");
+			iot.publish("rkX4LYFeZ", "up");
 		}
 	}
 	iot.loop();
@@ -549,4 +574,7 @@ void loop(void)
 
 <p><img src="http://ojc9ndn3w.bkt.clouddn.com/FsihnWZeaTSvd5gLGlbncj32yGDi"width="800px" style="display: block; margin: 0 auto;"><br/></p>
 
+
+
 </body>
+</html>
