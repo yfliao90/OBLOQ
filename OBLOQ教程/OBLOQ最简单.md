@@ -38,7 +38,7 @@ $$
 
 ##### （附）OBLOQ模块简介
 
-功能：无线上网模块。能使设备能通过wifi连接上网，收发数据。正常工作时OBLOQ上绿色LED灯常亮。
+功能：无线上网模块。能使设备能通过wifi连接上网，收发数据。正常工作时OBLOQ上LED状态是绿色常亮。
 
 <img src="./img/OBLOQ引脚说明图.jpg" width="300px">
 
@@ -60,8 +60,6 @@ $$
 |  颜色  | 指示状态   |
 | :--: | :----- |
 |  红色  | 没有正常运行 |
-|  白色  | 连上wifi |
-|  蓝色  | 有新版固件  |
 |  黄色  | 连接服务器中 |
 |  绿色  | 正常工作   |
 
@@ -79,11 +77,11 @@ $$
 
 ![创建设备Button](.\img\设备1.png)
 
-观察到设备唯一识别码Topic以及左侧的用户信息。
+观察到设备唯一识别码Topic以及左侧的用户信息，点击**眼睛**图标可以将隐藏的Iot_id和Iot_pwd显示出来。
 
 ![用户信息](.\img\IDToken.png)
 
-为了稍后编程需要，记下他们：
+为了稍后编程需要，记下相关账号：
 
 * iot_id: Skv3zKyNb
 * iot_pwd: r1lD3ztJ4b
@@ -119,47 +117,76 @@ $$
 
 ## 3. 在主控板上烧录控制程序
 
-完成硬件搭建后，为了能让这些模块和板子运作起来，需要向主控板烧录程序。
+完成硬件搭建后，为了能让这些模块和板子运作起来，需要向主控板烧录程序。下面是一段示例代码，测试环境如下：
 
-下面是一段示例代码：
+- WIFI_SSID:testssid
+- WIFI_PASSWD:testpwd
+
+
+- iot_id: Skv3zKyNb
+- iot_pwd: r1lD3ztJ4b
+- Topic: BJTS0iaU-
 
 注意：根据自己的环境信息修改样例代码中的wifi信息和测试IOT网站账号。
 
 ```c++
-iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
+Obloq olq(Serial, "testssid", "testpwd");
+String MQTTCONNECT = "{\"type\":\"mqtt\",\"method\":\"connect\",\"ClientId\":\"SkxprkFyE-\",\"Iot_id\":\"Skv3zKyNb\",\"Iot_pwd\":\"r1lD3ztJ4b\"}";
+String SUBSCRIBE   = "{\"type\":\"mqtt\",\"method\":\"subscribe\",\"topic\":\"BJTS0iaU-\"}";
+
 ```
 
 **具体代码**
 
 ```c++
-#include "Iot.h"
-Iot iot;   
-void * eventHandle(const char *data, uint16_t len)
+#include <ArduinoJson.h>
+#include <SoftwareSerial.h>
+#include "Obloq.h"
+
+StaticJsonBuffer<200> jsonBuffer;
+
+bool sendFlag = true;
+String MQTTCONNECT = "{\"type\":\"mqtt\",\"method\":\"connect\",\"ClientId\":\"SkxprkFyE-\",\"Iot_id\":\"Skv3zKyNb\",\"Iot_pwd\":\"r1lD3ztJ4b\"}";
+String SUBSCRIBE   = "{\"type\":\"mqtt\",\"method\":\"subscribe\",\"topic\":\"BJTS0iaU-\"}";
+
+Obloq olq(Serial, "testssid", "testpwd");
+
+void handleRaw(String& data)
 {
-   switch(atoi(data))              //将物联网发送字符串转换成数字
+    //Serial.println(data);   //串口打印返回的数据
+}
+void handleJson(JsonObject& data)
+{
+    static int message = 0;
+    if(strcmp(data["topic"],"BJTS0iaU-") == 0)
     {
-      case 1:
-        digitalWrite(13,HIGH);     //打开小灯
-        break;
-      case 2:
-        digitalWrite(13,LOW);      //关闭小灯
-        break;
-      default:break;
+        message = data["message"];
+    }
+    switch(message)
+    {        
+        case 1: digitalWrite(13,HIGH) ;break;
+        case 2: digitalWrite(13,LOW);break;
+        default:break;
     }
 }
 
-void setup(void)
-{ 
-  Serial.begin(38400);
-  pinMode(13,OUTPUT);
-  iot.setup(Serial, "DFSoftware", "dfrobotsoftware","ryHxUYFeW", "SyPZIFKxZ|BJgD-IKYeZ");
-  iot.subscribe("rkX4LYFeZ", eventHandle);   //rkX4LYFeZ是物联网设备名
-  iot.start();
-}
-void loop(void)
+void setup()
 {
-  iot.loop();
+    Serial.begin(9600);
+    olq.setHandleRaw(handleRaw);
+    olq.setHandleJson(handleJson);
 }
+void loop()
+{
+    olq.update();
+    if(sendFlag && olq.getWifiState()==2)
+    {
+      sendFlag = false;
+      olq.sendMsg(MQTTCONNECT);
+      olq.sendMsg(SUBSCRIBE);
+    }
+}
+
 ```
 
 
@@ -197,7 +224,7 @@ void loop(void)
 
 如果你并没有看到理想中的结果，检查一下是不是在下面的哪些步骤出了一些小问题：
 
-* 程序中的wifi账号（SSID）、密码，clientID、devicesToken、Topic要保证书写的正确性；
+* 程序中的wifi账号、密码、ClientId、Iot_id、Iot_pwd，topic要保证书写的正确性；
 * 硬件连线要正确，尤其注意实际使用的引脚和程序是否能对应；
 * 当信号灯保持红色，蓝色或者黄色不变的时候，复位UNO开发板。
 
