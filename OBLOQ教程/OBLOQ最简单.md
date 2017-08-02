@@ -64,7 +64,6 @@ $$
 |  绿色  | 正常工作   |
 
 
-
 ## 1. 在IOT网站上创建项目
 
 通过一个简单的案例，我们了解如何使用OBLOQ。
@@ -133,7 +132,6 @@ $$
 Obloq olq(Serial, "testssid", "testpwd");
 String MQTTCONNECT = "{\"type\":\"mqtt\",\"method\":\"connect\",\"ClientId\":\"SkxprkFyE-\",\"Iot_id\":\"Skv3zKyNb\",\"Iot_pwd\":\"r1lD3ztJ4b\"}";
 String SUBSCRIBE   = "{\"type\":\"mqtt\",\"method\":\"subscribe\",\"topic\":\"BJTS0iaU-\"}";
-
 ```
 
 **具体代码**
@@ -224,9 +222,11 @@ void loop()
 
 如果你并没有看到理想中的结果，检查一下是不是在下面的哪些步骤出了一些小问题：
 
-* 程序中的wifi账号、密码、ClientId、Iot_id、Iot_pwd，topic要保证书写的正确性；
+* 程序中的wifi账号（SSID）、密码，iot_user、iot_pwd、Topic要保证书写的正确性；
+
+
 * 硬件连线要正确，尤其注意实际使用的引脚和程序是否能对应；
-* 当信号灯保持红色，蓝色或者黄色不变的时候，复位UNO开发板。
+* 当OBLOQ信号灯保持红色，或者黄色不变的时候，复位UNO开发板。
 
 
 
@@ -241,6 +241,6 @@ void loop()
 
 1. 在IOT网站上创建项目设备
 2. 搭设硬件
-3. 在发送端的主控板上烧录对应的固件
+3. 在主控板上烧录对应的固件
 4. 展示项目效果，查看得到的设备数据
 
