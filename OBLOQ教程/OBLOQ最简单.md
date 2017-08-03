@@ -184,7 +184,6 @@ void loop()
       olq.sendMsg(SUBSCRIBE);
     }
 }
-
 ```
 
 
@@ -222,7 +221,7 @@ void loop()
 
 如果你并没有看到理想中的结果，检查一下是不是在下面的哪些步骤出了一些小问题：
 
-* 程序中的wifi账号（SSID）、密码，iot_user、iot_pwd、Topic要保证书写的正确性；
+* 程序中的wifi账号（SSID）、密码，iot_user、iot_pwd、topic要保证书写的正确性；
 
 
 * 硬件连线要正确，尤其注意实际使用的引脚和程序是否能对应；
