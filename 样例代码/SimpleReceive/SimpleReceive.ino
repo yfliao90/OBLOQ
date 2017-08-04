@@ -2,12 +2,7 @@
 #include <SoftwareSerial.h>
 #include "Obloq.h"
 
-StaticJsonBuffer<200> jsonBuffer;
-
 bool sendFlag = true;
-String MQTTCONNECT = "{\"type\":\"mqtt\",\"method\":\"connect\",\"ClientId\":\"SkxprkFyE-\",\"Iot_id\":\"r1qHJFJ4Z\",\"Iot_pwd\":\"SylqH1Y1VZ\"}";
-String SUBSCRIBE   = "{\"type\":\"mqtt\",\"method\":\"subscribe\",\"topic\":\"BJpHJt1VW\"}";
-
 Obloq olq(Serial, "DFSoftware", "dfrobotsoftware");
 
 void handleRaw(String& data)
@@ -23,8 +18,8 @@ void handleJson(JsonObject& data)
     }
     switch(message)
     {
-        case 0: digitalWrite(13,LOW);break;
-        case 1: digitalWrite(13,HIGH) ;break;
+        case 1: digitalWrite(13,HIGH);break;
+        case 2: digitalWrite(13,LOW) ;break;
         default:break;
     }
 }
@@ -32,6 +27,7 @@ void handleJson(JsonObject& data)
 void setup()
 {
     Serial.begin(9600);
+    pinMode(13,OUTPUT);
     olq.setHandleRaw(handleRaw);
     olq.setHandleJson(handleJson);
 }
@@ -41,7 +37,7 @@ void loop()
     if(sendFlag && olq.getWifiState()==2)
     {
       sendFlag = false;
-      olq.sendMsg(MQTTCONNECT);
-      olq.sendMsg(SUBSCRIBE);
+      olq.connect("SkxprkFyE-","r1qHJFJ4Z","SylqH1Y1VZ");
+      olq.subscribe("BJpHJt1VW");
     }
 }
