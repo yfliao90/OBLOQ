@@ -84,7 +84,7 @@ $$
 
 * iot_id: Skv3zKyNb
 * iot_pwd: r1lD3ztJ4b
-* Topic: BJTS0iaU-
+* topic: BJTS0iaU-
 
 
 
@@ -118,35 +118,29 @@ $$
 
 完成硬件搭建后，为了能让这些模块和板子运作起来，需要向主控板烧录程序。下面是一段示例代码，测试环境如下：
 
-- WIFI_SSID:testssid
-- WIFI_PASSWD:testpwd
+- ssid:testssid
+- pwd:testpwd
 
 
 - iot_id: Skv3zKyNb
 - iot_pwd: r1lD3ztJ4b
-- Topic: BJTS0iaU-
+- topic: BJTS0iaU-
 
 注意：根据自己的环境信息修改样例代码中的wifi信息和测试IOT网站账号。
 
 ```c++
-Obloq olq(Serial, "testssid", "testpwd");
-String MQTTCONNECT = "{\"type\":\"mqtt\",\"method\":\"connect\",\"ClientId\":\"SkxprkFyE-\",\"Iot_id\":\"Skv3zKyNb\",\"Iot_pwd\":\"r1lD3ztJ4b\"}";
-String SUBSCRIBE   = "{\"type\":\"mqtt\",\"method\":\"subscribe\",\"topic\":\"BJTS0iaU-\"}";
+Obloq olq(Serial, "ssid", "pwd");
+olq.connect(client_id,iot_id,iot_pwd);
+olq.subscribe(topic);
 ```
 
 **具体代码**
 
 ```c++
 #include <ArduinoJson.h>
-#include <SoftwareSerial.h>
 #include "Obloq.h"
 
-StaticJsonBuffer<200> jsonBuffer;
-
 bool sendFlag = true;
-String MQTTCONNECT = "{\"type\":\"mqtt\",\"method\":\"connect\",\"ClientId\":\"SkxprkFyE-\",\"Iot_id\":\"Skv3zKyNb\",\"Iot_pwd\":\"r1lD3ztJ4b\"}";
-String SUBSCRIBE   = "{\"type\":\"mqtt\",\"method\":\"subscribe\",\"topic\":\"BJTS0iaU-\"}";
-
 Obloq olq(Serial, "testssid", "testpwd");
 
 void handleRaw(String& data)
@@ -155,22 +149,23 @@ void handleRaw(String& data)
 }
 void handleJson(JsonObject& data)
 {
-    static int message = 0;
+    int message = 0;
     if(strcmp(data["topic"],"BJTS0iaU-") == 0)
     {
         message = data["message"];
-    }
-    switch(message)
-    {        
-        case 1: digitalWrite(13,HIGH) ;break;
-        case 2: digitalWrite(13,LOW);break;
-        default:break;
-    }
+        switch(message)
+        {
+            case 1: digitalWrite(13,HIGH);break;
+            case 2: digitalWrite(13,LOW) ;break;
+            default:break;
+        }
+    }  
 }
 
 void setup()
 {
     Serial.begin(9600);
+    pinMode(13,OUTPUT);
     olq.setHandleRaw(handleRaw);
     olq.setHandleJson(handleJson);
 }
@@ -180,8 +175,8 @@ void loop()
     if(sendFlag && olq.getWifiState()==2)
     {
       sendFlag = false;
-      olq.sendMsg(MQTTCONNECT);
-      olq.sendMsg(SUBSCRIBE);
+      olq.connect("SkxprkFyE-","Skv3zKyNb","r1lD3ztJ4b");
+      olq.subscribe("BJTS0iaU-");
     }
 }
 ```

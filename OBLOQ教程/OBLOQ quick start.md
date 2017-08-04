@@ -60,7 +60,6 @@ Signal light:
 | Color  | State             |
 | :----: | :---------------- |
 |  Red   | Error             |
-| White  | Connecting wifi   |
 | Yellow | Connect ot server |
 | Green  | Normal            |
 
@@ -126,42 +125,66 @@ The microcontroller follows rules to control OBLOQ and device. These rules are c
 
 Here is sample code:
 
+- ssid:testssid
+- pwd:testpwd
+
+
+- iot_id: Skv3zKyNb
+- iot_pwd: r1lD3ztJ4b
+- topic: BJTS0iaU-
+
 Attention: Please verify below wifi configuration and iot account information according to your own needs.
 
 ```c++
-iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
+Obloq olq(Serial, "ssid", "pwd");
+olq.connect(client_id,iot_id,iot_pwd);
+olq.subscribe(topic);
 ```
 
 **Source code**
 
 ```c++
-#include "Iot.h"
-Iot iot;   
-void * eventHandle(const char *data, uint16_t len)
+#include <ArduinoJson.h>
+#include "Obloq.h"
+
+bool sendFlag = true;
+Obloq olq(Serial, "testssid", "testpwd");
+
+void handleRaw(String& data)
 {
-   switch(atoi(data))              //将物联网发送字符串转换成数字
+    //Serial.println(data);   //串口打印返回的数据
+}
+void handleJson(JsonObject& data)
+{
+    int message = 0;
+    if(strcmp(data["topic"],"BJTS0iaU-") == 0)
     {
-      case 1:
-        digitalWrite(13,HIGH);     //打开小灯
-        break;
-      case 2:
-        digitalWrite(13,LOW);      //关闭小灯
-        break;
-      default:break;
-    }
+        message = data["message"];
+        switch(message)
+        {
+            case 1: digitalWrite(13,HIGH);break;
+            case 2: digitalWrite(13,LOW) ;break;
+            default:break;
+        }
+    }  
 }
 
-void setup(void)
-{ 
-  Serial.begin(38400);
-  pinMode(13,OUTPUT);
-  iot.setup(Serial, "DFSoftware", "dfrobotsoftware","ryHxUYFeW", "SyPZIFKxZ|BJgD-IKYeZ");
-  iot.subscribe("rkX4LYFeZ", eventHandle);   //rkX4LYFeZ是物联网设备名
-  iot.start();
-}
-void loop(void)
+void setup()
 {
-  iot.loop();
+    Serial.begin(9600);
+    pinMode(13,OUTPUT);
+    olq.setHandleRaw(handleRaw);
+    olq.setHandleJson(handleJson);
+}
+void loop()
+{
+    olq.update();
+    if(sendFlag && olq.getWifiState()==2)
+    {
+      sendFlag = false;
+      olq.connect("SkxprkFyE-","Skv3zKyNb","r1lD3ztJ4b");
+      olq.subscribe("BJTS0iaU-");
+    }
 }
 ```
 

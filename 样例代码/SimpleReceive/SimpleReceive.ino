@@ -1,5 +1,4 @@
 #include <ArduinoJson.h>
-#include <SoftwareSerial.h>
 #include "Obloq.h"
 
 bool sendFlag = true;
@@ -11,17 +10,17 @@ void handleRaw(String& data)
 }
 void handleJson(JsonObject& data)
 {
-    static int message = 0;
+    int message = 0;
     if(strcmp(data["topic"],"BJpHJt1VW") == 0)
     {
         message = data["message"];
-    }
-    switch(message)
-    {
-        case 1: digitalWrite(13,HIGH);break;
-        case 2: digitalWrite(13,LOW) ;break;
-        default:break;
-    }
+        switch(message)
+        {
+            case 1: digitalWrite(13,HIGH);break;
+            case 2: digitalWrite(13,LOW) ;break;
+            default:break;
+        }
+    }  
 }
 
 void setup()
