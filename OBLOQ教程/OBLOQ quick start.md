@@ -4,7 +4,7 @@
 
 OBLOQ module is a medium that connects devices to internet.
 
-To monitor or even control your lamp, audio or any other electrical equipment, you need at first connet them to the internet. OBLOQ must be an easy and powerful tool at your hand. It is easy to configure OBLOQ module. There is no need to program complicated codes. Only 15 minutes, these little electrical devices will get their lifes via internet.
+To monitor or even control your lamp, audio or any other electrical equipment, you need at first connect them to the internet. OBLOQ must be an easy and powerful tool at your hand. It is easy to configure OBLOQ module. There is no need to program complicated codes. Only 15 minutes, these little electrical devices will get their lives via internet.
 
 
 
@@ -38,7 +38,7 @@ All the data is transmited in the IOT website server (iot.dfrobot.com.cn). This 
 
 ##### (addendum) OBLOQ module brief introduction
 
-Function: Connect device to Internet wirelessly. The device can get or post data from/to IOT website. OBLOQ's signal light always keeps green when its operate normally. 
+Function:  Wireless connect devices to Internet. The device can get or post data from/to IOT website. OBLOQ's signal light always keeps green when its operate normally. 
 
 <img src="./img/OBLOQ引脚说明图.jpg" width="300px">
 
@@ -60,7 +60,7 @@ Signal light:
 | Color  | State             |
 | :----: | :---------------- |
 |  Red   | Error             |
-| Yellow | Connect ot server |
+| Yellow | Connect to server |
 | Green  | Normal            |
 
 
@@ -77,13 +77,13 @@ Login to iot.dfrobot.com.cn, enter the workshop. Add a new device. Its name is b
 
 ![创建设备Button](.\img\设备1.png)
 
-Each device will have an uniq id (Topic).
+Each device will have an unique id (Topic).
 
 Iot_id and Iot_pwd are on the left of workshop page. 
 
 ![用户信息](.\img\IDToken.png)
 
-keep in mind the infomation below for further use:
+keep in mind the information below for further use:
 
 * iot_id: Skv3zKyNb
 * iot_pwd: r1lD3ztJ4b
@@ -94,7 +94,7 @@ keep in mind the infomation below for further use:
 
 ## 2. Hardware##
 
-Connect hardwares using Dupont wire. Prepare wifi envirionment for OBLOQ. Upload control code to the microcontroller (Arduino UNO). The IOT device is ready to run.
+Connect hardware using Dupont wire. Prepare wifi environment for OBLOQ. Upload control code to the microcontroller (Arduino UNO). The IOT device is ready to run.
 
 
 
@@ -125,8 +125,8 @@ The microcontroller follows rules to control OBLOQ and device. These rules are c
 
 Here is sample code:
 
-- ssid:testssid
-- pwd:testpwd
+- ssid: testssid
+- pwd: testpwd
 
 
 - iot_id: Skv3zKyNb
@@ -200,7 +200,7 @@ After program is uploaded, connect pin Rx, Tx of Arduino UNO to pin Tx, Rx of OB
 
 Now let's take a look at the result of this project. 
 
-1. Keep all hardwares and devices power on. When OBLOQ module operates normally, its LED (signal light) shows green and is always on. 
+1. Keep all hardware and devices power on. When OBLOQ module operates normally, its LED (signal light) shows green and is always on. 
 2. Login to iot.dfrobot.com.cn, enter Workshop, check if the operating device has been registered on IOT website.
 3. Send number "1" to this device. The LED (pin 13) on Arduino UNO will be turned on. Send number "2", it will be turned off.
 
@@ -236,8 +236,9 @@ This is a start up tutorial of  how to use iot website and OBLOQ to connect a LE
 
 Steps summary:
 
-1. Create the porject device on iot website
+1. Create the project device on iot website
 2. Connect all devices using Dupont wire
-3. Upload repuired program to Arduino UNO
+3. Upload required program to Arduino UNO
 4. Sending "1" or "2" message in the iot workshop, check if LED (pin 13) on Arduino is turned on or off.
+
 
