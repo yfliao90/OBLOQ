@@ -20,7 +20,7 @@
   - `{"type":"wifi","wifiState":1}` wifi连接状态：正在连接wifi
   - `{"type":"wifi","wifiState":-1}` wifi连接状态：wifi断开连接
   - `{"type":"wifi","wifiState":3} ` wifi连接状态：wifi连接失败，**检查SSID和PWD是否输入正确**
-  - `{"type":"wifi","wifiState":2,"ip":"192.168.0.001"}` wifi连接状态：：wifi连接成功，返回OBLOQ的ip地址
+  - `{"type":"wifi","wifiState":2,"ip":"192.168.0.001"}` wifi连接状态：wifi连接成功，返回OBLOQ的ip地址
 2. 普通"|"分割的字符串
   - `|type|wifi|wifiState|1|`
   - `|type|wifi|wifiState|-1|`
@@ -104,7 +104,7 @@ OBLOQ串口接收到指令后，返回的数据类型有两种：JSON字符串�
 
 参数：
 - `"type":"system"` 发送消息类型：系统消息
-- `"message":"getReturnType"` 获取当前OBLOQ串口返回的数据格式
+- `"message":"setReturnType"` 设置当前OBLOQ串口返回的数据格式
 
 返回值：
 1. JSON格式
@@ -116,7 +116,7 @@ Arduino样例：
 - ```cpp
   softSerial.print("{\"type\":\"system\",\"message\":\"setReturnType\",\"returnType\":\"string\"}\r")
   ```
-```
+
 
 ### 重新连接wifi
 ------------
@@ -131,15 +131,15 @@ Arduino样例：
 
 返回值：
 1. JSON格式
-	- `{"type":"wifi","wifiState":1}` wifi连接状态：正在连接wifi
-	- `{"type":"wifi","wifiState":-1}` wifi连接状态：wifi断开连接
-	- `{"type":"wifi","wifiState":3} ` wifi连接状态：wifi连接失败，**检查SSID和PWD是否输入正确**
-	- `{"type":"wifi","wifiState":2,"ip":"192.168.0.001"}` wifi连接状态：：wifi连接成功，返回OBLOQ的ip地址
+  - `{"type":"wifi","wifiState":1}` wifi连接状态：正在连接wifi
+  - `{"type":"wifi","wifiState":-1}` wifi连接状态：wifi断开连接
+  - `{"type":"wifi","wifiState":3} ` wifi连接状态：wifi连接失败，**检查SSID和PWD是否输入正确**
+  - `{"type":"wifi","wifiState":2,"ip":"192.168.0.001"}` wifi连接状态：：wifi连接成功，返回OBLOQ的ip地址
 2. 普通"|"分割的字符串
-	- `|type|wifi|wifiState|1|`
-	- `|type|wifi|wifiState|-1|`
-	- `|type|wifi|wifiState|3|`
-	- `|type|wifi|wifiState|2|ip|192.168.0,001|`
+  - `|type|wifi|wifiState|1|`
+  - `|type|wifi|wifiState|-1|`
+  - `|type|wifi|wifiState|3|`
+  - `|type|wifi|wifiState|2|ip|192.168.0,001|`
 
 Arduino样例：
 - `softSerial.print("{\"type\":\"system\",\"message\":\"CONNECTWIFI\"}\r")`
@@ -150,19 +150,21 @@ Arduino样例：
 
 请求方式：
 1. 连接默认的物联网,默认连接到物联网host：iot.dfrobot.com.cn
-	- `{"type":"mqtt","method":"connect","ClientId":"test","Iot_id":"test","Iot_pwd":"test"}`
+  - `{"type":"mqtt","method":"connect","ClientId":"test","Iot_id":"test","Iot_pwd":"test"}`
 2. 连接指定的物联网host
-	- ```cpp
-{"type":"mqtt","method":"connect","ClientId":"SkxprkFyE-","Iot_id":"r1qHJFJ4Z","Iot_pwd":"SylqH1Y1VZ","url":"iot.dfrobot.com.cn","port":"1883"}
-```
+  - ```cpp
+    {"type":"mqtt","method":"connect","ClientId":"SkxprkFyE-","Iot_id":"r1qHJFJ4Z","Iot_pwd":"SylqH1Y1VZ","url":"iot.dfrobot.com.cn","port":"1883"}
+    ```
 
 参数：
+
 - `"type":"mqtt"` 发送消息类型：mqtt消息
 - `"method":"connect"` 执行方法：连接请求
 - `"ClientId":"test"` ClientId，随机输入，不能有中文
 - `"Iot_id":"test"` 设置连接的物联网id,获取Iot_id可参考[教程](http://iot.dfrobot.com.cn/ "教程")
 - `"Iot_pwd":"test"`设置连接的物联网pwd,获取Iot_pwd可参考[教程](http://iot.dfrobot.com.cn/ "教程")
-- `"host":"iot.test.com"`可选参数，指定连接特定的物联网host，默认连接：[iot.dfrobot.com.cn](http://iot.dfrobot.com.cn/ "iot.dfrobot.com.cn")
+- `"url":"iot.dfrobot.com.cn"`可选参数，指定连接特定的物联网host，默认连接：[iot.dfrobot.com.cn](http://iot.dfrobot.com.cn/ "iot.dfrobot.com.cn")
+- `"port":"1883"` 可选参数，指定物联网host的端口
 
 返回值：
 1. JSON格式
@@ -192,9 +194,9 @@ Arduino样例：
 - ```cpp
   softSerial.print("{\"type\":"mqtt",\"method\":\"connect\",\"ClientId\":\"test\",\"Iot_id\":\"test\",\"Iot_pwd\":\"test\"}\r")
   ```
-```
 
-### 订阅一个topic
+
+### 订阅一个device
 ------------
 物联网有很多设备，通过订阅设备的topic可以监听物联网设备接收到的消息。
 
@@ -208,14 +210,14 @@ Arduino样例：
 
 返回值：
 1. JSON格式
-	- `{"type":"mqtt","subscribe":1}` 订阅成功返回左侧字符串，订阅失败无返回。
-	- `{"type":"mqtt","topic":"BJpHJt1VW","message":"test"}`返回某个订阅topic收到的消息
-		- `"topic":"BJpHJt1VW"`接收到消息的topic
-		- `"message":"test"`接收到的消息内容:test
+  - `{"type":"mqtt","subscribe":1}` 订阅成功返回左侧字符串，订阅失败无返回。
+  - `{"type":"mqtt","topic":"BJpHJt1VW","message":"test"}`返回某个订阅topic收到的消息
+    - `"topic":"BJpHJt1VW"`接收到消息的topic
+    - `"message":"test"`接收到的消息内容:test
 2. 普通"|"分割的字符串
-	- `|type|mqtt|subscribe|1|`
-	- `|type|mqtt|topic|BJpHJt1VW|message|test|`
-	
+  - `|type|mqtt|subscribe|1|`
+  - `|type|mqtt|topic|BJpHJt1VW|message|test|`
+
 Arduino样例：
 - `softSerial.print("{\"type\":\"mqtt\",\"method\":\"subscribe\",\"topic\":\"BJpHJt1VW\"}\r")`
 
@@ -228,22 +230,25 @@ Arduino样例：
 
 参数：
 - `"type":"mqtt"` 发送消息类型：mqtt消息
-- `"method":"subscribe"` 执行方法：发布消息
+- `"method":"publish"` 执行方法：发布消息
 - `"topic":"BJpHJt1VW"` 接收消息的topic,获取设备topic可参考[教程](http://iot.dfrobot.com.cn/ "教程")
 - `"message":"test"` 发布的消息内容：test
 
 返回值：
 1. JSON格式
-	- `{"type":"mqtt","publish":1}` 发布成功返回左侧字符串，发布失败无返回。
+  - `{"type":"mqtt","publish":1}` 发布成功返回左侧字符串，发布失败无返回。
 2. 普通"|"分割的字符串
-	- `|type|mqtt|publish|1|`
-	
+  - `|type|mqtt|publish|1|`
+
 Arduino样例：
-​```cpp
+```cpp
 - softSerial.print("{\"type\":\"mqtt\",\"method\":\"publish\",\"topic\":\"BJpHJt1VW\",\"message\":\"test\"}\r")
 ```
 
+
+
 ### 重新连接mqtt
+
 ------------
 重新建立mqtt连接，前提是必须已经通过Iot_id，Iot_pwd建立过一次mqtt连接。
 
@@ -265,7 +270,7 @@ Arduino样例：
 
 ### 断开mqtt连接
 ------------
-重新建立mqtt连接，前提是必须已经通过Iot_id，Iot_pwd建立过一次mqtt连接。
+断开已建立的mqtt连接，前提是必须已经通过Iot_id，Iot_pwd建立过一次mqtt连接。
 
 请求方式：
 - `{"type":"mqtt","method":"disconnect"}`
