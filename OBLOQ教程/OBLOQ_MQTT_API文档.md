@@ -105,6 +105,8 @@ OBLOQ串口接收到指令后，返回的数据类型有两种：JSON字符串�
 参数：
 - `"type":"system"` 发送消息类型：系统消息
 - `"message":"setReturnType"` 设置当前OBLOQ串口返回的数据格式
+- `"returnType":"string"`设置数据返回格式为 普通"|"分割的字符串格式
+- `"returnType":"json"`设置数据返回格式为json格式
 
 返回值：
 1. JSON格式
