@@ -103,8 +103,8 @@ Connect hardware using Dupont wire. Prepare wifi environment for OBLOQ. Upload c
 | Name                                     | Quantity |
 | ---------------------------------------- | -------- |
 | OBLOQ module                             | 1        |
-| Controller( i.e. Arduino UNO microcontroller*） | 1        |
-| LED module                               | 1        |
+| Controller ( i.e. Arduino UNO microcontroller*） | 1        |
+| LED module (In this case embedded on Arduino UNO) | 1        |
 | Dupont wire                              | Some     |
 
 *We choose Arduino UNO as the controller, you can also use other compatible controller as you wish.
@@ -125,6 +125,10 @@ The microcontroller follows rules to control OBLOQ and device. These rules are c
 
 Here is sample code:
 
+
+
+Attention: Please verify below wifi configuration and iot account information according to your own needs.
+
 - ssid: testssid
 - pwd: testpwd
 
@@ -132,8 +136,6 @@ Here is sample code:
 - iot_id: Skv3zKyNb
 - iot_pwd: r1lD3ztJ4b
 - topic: BJTS0iaU-
-
-Attention: Please verify below wifi configuration and iot account information according to your own needs.
 
 ```c++
 Obloq olq(Serial, "ssid", "pwd");
