@@ -75,13 +75,13 @@ We will learn how to use OBLOQ by a simple example.
 
 Login to iot.dfrobot.com.cn, enter the workshop. Add a new device. Its name is by default “new device 1”.
 
-![创建设备Button](.\img\设备1.png)
+![创建设备Button](.\img\003.png)
 
 Each device will have an unique id (Topic).
 
 Iot_id and Iot_pwd are on the left of workshop page. 
 
-![用户信息](.\img\IDToken.png)
+![用户信息](.\img\009.png)
 
 keep in mind the information below for further use:
 
@@ -113,7 +113,7 @@ Connect hardware using Dupont wire. Prepare wifi environment for OBLOQ. Upload c
 
 **schematic wiring diagram**
 
-![最简单接收设备](./img/最简单接收设备.png)
+![最简单接收设备](./img/004.png)
 
 
 
@@ -207,19 +207,19 @@ Now let's take a look at the result of this project.
 3. Send number "1" to this device. The LED (pin 13) on Arduino UNO will be turned on. Send number "2", it will be turned off.
 
 
-<img src="./img/switch1_2_开关小灯设备页面.png" width="800px">
+<img src="./img/005.png" width="800px">
 
 Before sending any message, the LED (pin 13) on Arduino UNO is off.
 
-<img src="./img/最简单教程结果展示_小灯灭.jpg" width="800px">
+<img src="./img/006.jpg" width="800px">
 
 Sending number "1", the LED will be turned on.
 
-<img src="./img/最简单教程结果展示_小灯亮_指示.jpg" width="800px">
+<img src="./img/007.jpg" width="800px">
 
 Let's see on IOT website, in the middle of "My device" webpage, there is a screening tool -- Check message. Here if we select "Date range -- 1 Day" and click "check", we can get the screening result of the exchanged messages of today. System will automatically generate a visualized data diagram.
 
-<img src="./img/switch1_2_开关小灯数据筛选页面.png" width="800px">
+<img src="./img/008.png" width="800px">
 
 
 
