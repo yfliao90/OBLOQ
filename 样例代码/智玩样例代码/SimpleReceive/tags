@@ -1,0 +1,76 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BufferSize	.\Obloq.cpp	7;"	d	file:
+HandleJson	.\Obloq.h	/^typedef void(*HandleJson)(JsonObject& data);$/;"	t
+HandleRaw	.\Obloq.h	/^typedef void(*HandleRaw)(String& data);$/;"	t
+Obloq	.\Obloq.cpp	/^Obloq::Obloq(HardwareSerial & hardSerial, String ssid, String pwd, String mac)$/;"	f	class:Obloq	signature:(HardwareSerial & hardSerial, String ssid, String pwd, String mac)
+Obloq	.\Obloq.cpp	/^Obloq::Obloq(SoftwareSerial & softSerial, String ssid, String pwd, String mac)$/;"	f	class:Obloq	signature:(SoftwareSerial & softSerial, String ssid, String pwd, String mac)
+Obloq	.\Obloq.h	/^	Obloq(HardwareSerial & hardSerial, String ssid, String pwd = "", String mac = "");$/;"	p	class:Obloq	access:public	signature:(HardwareSerial & hardSerial, String ssid, String pwd = Ó, String mac = Ó)
+Obloq	.\Obloq.h	/^	Obloq(SoftwareSerial & softSerial, String ssid, String pwd = "", String mac = "");$/;"	p	class:Obloq	access:public	signature:(SoftwareSerial & softSerial, String ssid, String pwd = Ó, String mac = Ó)
+Obloq	.\Obloq.h	/^class Obloq$/;"	c
+Obloq::Obloq	.\Obloq.cpp	/^Obloq::Obloq(HardwareSerial & hardSerial, String ssid, String pwd, String mac)$/;"	f	class:Obloq	signature:(HardwareSerial & hardSerial, String ssid, String pwd, String mac)
+Obloq::Obloq	.\Obloq.cpp	/^Obloq::Obloq(SoftwareSerial & softSerial, String ssid, String pwd, String mac)$/;"	f	class:Obloq	signature:(SoftwareSerial & softSerial, String ssid, String pwd, String mac)
+Obloq::Obloq	.\Obloq.h	/^	Obloq(HardwareSerial & hardSerial, String ssid, String pwd = "", String mac = "");$/;"	p	class:Obloq	access:public	signature:(HardwareSerial & hardSerial, String ssid, String pwd = Ó, String mac = Ó)
+Obloq::Obloq	.\Obloq.h	/^	Obloq(SoftwareSerial & softSerial, String ssid, String pwd = "", String mac = "");$/;"	p	class:Obloq	access:public	signature:(SoftwareSerial & softSerial, String ssid, String pwd = Ó, String mac = Ó)
+Obloq::_handleJson	.\Obloq.h	/^	HandleJson _handleJson = NULL;$/;"	m	class:Obloq	access:private
+Obloq::_handleRaw	.\Obloq.h	/^	HandleRaw _handleRaw = NULL;$/;"	m	class:Obloq	access:private
+Obloq::_hardSerial	.\Obloq.h	/^	HardwareSerial* _hardSerial = NULL;$/;"	m	class:Obloq	access:private
+Obloq::_interval	.\Obloq.h	/^	int _interval = 500;$/;"	m	class:Obloq	access:private
+Obloq::_isSerialReady	.\Obloq.h	/^	bool _isSerialReady = false;$/;"	m	class:Obloq	access:private
+Obloq::_mac	.\Obloq.h	/^	String _mac = "";$/;"	m	class:Obloq	access:private
+Obloq::_pwd	.\Obloq.h	/^	String _pwd = "";$/;"	m	class:Obloq	access:private
+Obloq::_softSerial	.\Obloq.h	/^	SoftwareSerial* _softSerial = NULL;$/;"	m	class:Obloq	access:private
+Obloq::_ssid	.\Obloq.h	/^	String _ssid = "";$/;"	m	class:Obloq	access:private
+Obloq::_time	.\Obloq.h	/^	unsigned long _time = 0;$/;"	m	class:Obloq	access:private
+Obloq::_wifiStat	.\Obloq.h	/^	int _wifiStat = -1;$/;"	m	class:Obloq	access:private
+Obloq::getWifiStat	.\Obloq.cpp	/^int Obloq::getWifiStat()$/;"	f	class:Obloq	signature:()
+Obloq::getWifiStat	.\Obloq.h	/^	int	 getWifiStat();$/;"	p	class:Obloq	access:public	signature:()
+Obloq::isSerialReady	.\Obloq.cpp	/^bool Obloq::isSerialReady()$/;"	f	class:Obloq	signature:()
+Obloq::isSerialReady	.\Obloq.h	/^	bool isSerialReady();$/;"	p	class:Obloq	access:public	signature:()
+Obloq::ping	.\Obloq.cpp	/^void Obloq::ping()$/;"	f	class:Obloq	signature:()
+Obloq::ping	.\Obloq.h	/^	void ping();$/;"	p	class:Obloq	access:public	signature:()
+Obloq::receiveData	.\Obloq.cpp	/^void Obloq::receiveData(String & data)$/;"	f	class:Obloq	signature:(String & data)
+Obloq::receiveData	.\Obloq.h	/^	void receiveData(String&);$/;"	p	class:Obloq	access:private	signature:(String&)
+Obloq::sendMsg	.\Obloq.cpp	/^bool Obloq::sendMsg(String msg)$/;"	f	class:Obloq	signature:(String msg)
+Obloq::sendMsg	.\Obloq.h	/^	bool sendMsg(String);$/;"	p	class:Obloq	access:public	signature:(String)
+Obloq::setHandleJson	.\Obloq.cpp	/^void Obloq::setHandleJson(HandleJson handle)$/;"	f	class:Obloq	signature:(HandleJson handle)
+Obloq::setHandleJson	.\Obloq.h	/^	void setHandleJson(HandleJson);$/;"	p	class:Obloq	access:public	signature:(HandleJson)
+Obloq::setHandleRaw	.\Obloq.cpp	/^void Obloq::setHandleRaw(HandleRaw handle)$/;"	f	class:Obloq	signature:(HandleRaw handle)
+Obloq::setHandleRaw	.\Obloq.h	/^	void setHandleRaw(HandleRaw);$/;"	p	class:Obloq	access:public	signature:(HandleRaw)
+Obloq::update	.\Obloq.cpp	/^void Obloq::update()$/;"	f	class:Obloq	signature:()
+Obloq::update	.\Obloq.h	/^	void update();$/;"	p	class:Obloq	access:public	signature:()
+Obloq::~Obloq	.\Obloq.cpp	/^Obloq::~Obloq()$/;"	f	class:Obloq	signature:()
+Obloq::~Obloq	.\Obloq.h	/^	~Obloq();$/;"	p	class:Obloq	access:public	signature:()
+_handleJson	.\Obloq.h	/^	HandleJson _handleJson = NULL;$/;"	m	class:Obloq	access:private
+_handleRaw	.\Obloq.h	/^	HandleRaw _handleRaw = NULL;$/;"	m	class:Obloq	access:private
+_hardSerial	.\Obloq.h	/^	HardwareSerial* _hardSerial = NULL;$/;"	m	class:Obloq	access:private
+_interval	.\Obloq.h	/^	int _interval = 500;$/;"	m	class:Obloq	access:private
+_isSerialReady	.\Obloq.h	/^	bool _isSerialReady = false;$/;"	m	class:Obloq	access:private
+_mac	.\Obloq.h	/^	String _mac = "";$/;"	m	class:Obloq	access:private
+_pwd	.\Obloq.h	/^	String _pwd = "";$/;"	m	class:Obloq	access:private
+_softSerial	.\Obloq.h	/^	SoftwareSerial* _softSerial = NULL;$/;"	m	class:Obloq	access:private
+_ssid	.\Obloq.h	/^	String _ssid = "";$/;"	m	class:Obloq	access:private
+_time	.\Obloq.h	/^	unsigned long _time = 0;$/;"	m	class:Obloq	access:private
+_wifiStat	.\Obloq.h	/^	int _wifiStat = -1;$/;"	m	class:Obloq	access:private
+getWifiStat	.\Obloq.cpp	/^int Obloq::getWifiStat()$/;"	f	class:Obloq	signature:()
+getWifiStat	.\Obloq.h	/^	int	 getWifiStat();$/;"	p	class:Obloq	access:public	signature:()
+isSerialReady	.\Obloq.cpp	/^bool Obloq::isSerialReady()$/;"	f	class:Obloq	signature:()
+isSerialReady	.\Obloq.h	/^	bool isSerialReady();$/;"	p	class:Obloq	access:public	signature:()
+ping	.\Obloq.cpp	/^void Obloq::ping()$/;"	f	class:Obloq	signature:()
+ping	.\Obloq.h	/^	void ping();$/;"	p	class:Obloq	access:public	signature:()
+receiveData	.\Obloq.cpp	/^void Obloq::receiveData(String & data)$/;"	f	class:Obloq	signature:(String & data)
+receiveData	.\Obloq.h	/^	void receiveData(String&);$/;"	p	class:Obloq	access:private	signature:(String&)
+sendMsg	.\Obloq.cpp	/^bool Obloq::sendMsg(String msg)$/;"	f	class:Obloq	signature:(String msg)
+sendMsg	.\Obloq.h	/^	bool sendMsg(String);$/;"	p	class:Obloq	access:public	signature:(String)
+setHandleJson	.\Obloq.cpp	/^void Obloq::setHandleJson(HandleJson handle)$/;"	f	class:Obloq	signature:(HandleJson handle)
+setHandleJson	.\Obloq.h	/^	void setHandleJson(HandleJson);$/;"	p	class:Obloq	access:public	signature:(HandleJson)
+setHandleRaw	.\Obloq.cpp	/^void Obloq::setHandleRaw(HandleRaw handle)$/;"	f	class:Obloq	signature:(HandleRaw handle)
+setHandleRaw	.\Obloq.h	/^	void setHandleRaw(HandleRaw);$/;"	p	class:Obloq	access:public	signature:(HandleRaw)
+update	.\Obloq.cpp	/^void Obloq::update()$/;"	f	class:Obloq	signature:()
+update	.\Obloq.h	/^	void update();$/;"	p	class:Obloq	access:public	signature:()
+~Obloq	.\Obloq.cpp	/^Obloq::~Obloq()$/;"	f	class:Obloq	signature:()
+~Obloq	.\Obloq.h	/^	~Obloq();$/;"	p	class:Obloq	access:public	signature:()

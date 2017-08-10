@@ -153,13 +153,19 @@
 实际程序中必须修改程序中以下信息才能正常使用。
 
 ```c++
-#define WIFI_SSID       "DFSoftware"            //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
-#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
-#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
+const String ssid = "DFRobot-guest";     //wifi名称
+const String password = "dfrobot@2017";  //wifi密码
+const String client_id = "SkxprkFyE-";   //物联网client_id
+const String iot_id = "r1qHJFJ4Z";     	 //物联网iot_id
+const String iot_pwd = "SylqH1Y1VZ";     //物联网iot_pwd
+const String topic = "BJpHJt1VW";        //物联网设备topic
+
 ...
 ...
-iot.publish("rkX4LYFeZ", tempString);  			//"rkX4LYFeZ"改为当前通信的设备Topic
+Obloq olq(softSerial, ssid, password);  //生成Obloq对象
+olq.connect(client_id,iot_id,iot_pwd);  //连接MQTT
+olq.subscribe(topic);                   //注册设备
+olq.publish(topic, "1");                //发送消息
 ...
 ```
 
@@ -168,56 +174,75 @@ iot.publish("rkX4LYFeZ", tempString);  			//"rkX4LYFeZ"改为当前通信的设�
 **具体代码**
 
 ```c++
-#include <Arduino.h>
+#include <ArduinoJson.h>
 #include <SoftwareSerial.h>
-#include "Iot.h"
+#include "Obloq.h"
 
-Iot iot;   
+//MQTT连接相关参数
+const String ssid = "DFRobot-guest";
+const String password = "dfrobot@2017";
+const String client_id = "SkxprkFyE-";
+const String iot_id = "r1qHJFJ4Z";
+const String iot_pwd = "SylqH1Y1VZ";
+const String topic = "BJpHJt1VW";
 
-SoftwareSerial mySerial(10, 11);         // RX, TX
-
-#define WIFI_SSID       "DFSoftware"            //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
-#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
-#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
-
-char *tempString =      "string";
-int normalVoltage = 0;                     //按键防抖动的相关参数
-bool isPress = false;
-bool isClick = false;;
-bool hasPress = false;
+//按键连接引脚
 int  buttonPin = 2;
+int  sendPingFlag = true;
+
+//按键防抖动的相关参数
+int normalVoltage = 0;                     
+bool isPress = false;
+bool isClick = false;
+bool hasPress = false;
 bool currentState = false;
 unsigned long currentTime = 0;
-bool sendFlag  = true;
+bool keyFlag  = true;
 
-void setup(void)
+SoftwareSerial softSerial(10, 11);         // RX, TX
+Obloq olq(softSerial, ssid, password);
+
+void handleRaw(String& data)
 {
-  mySerial.begin(38400);                   //打开软串口，波特率必须是38400
-  pinMode(buttonPin,INPUT);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
-  iot.start();
+    //Serial.println(data);   //串口打印返回的数据
 }
- 
-void loop(void)
+void handleJson(JsonObject& data)
 {
-  keyScan();
-  if(isClick)
-  {
-    if(sendFlag){
-      itoa(1,tempString,10);                 //方法一：将整型转换成字符串，然后再发送
-      iot.publish("rkX4LYFeZ", tempString);    
-      sendFlag = false;
+}
+
+void setup()
+{
+    //Serial.begin(9600);
+    softSerial.begin(9600);
+    pinMode(buttonPin,INPUT);
+    //olq.setHandleRaw(handleRaw);
+    //olq.setHandleJson(handleJson);
+}
+void loop()
+{
+    olq.update();
+    if(sendPingFlag && olq.getWifiState()==2)
+    {
+      sendPingFlag = false;
+      olq.connect(client_id,iot_id,iot_pwd);
+      delay(1000);
+      olq.subscribe(topic);
     }
-    else{
-      iot.publish("rkX4LYFeZ", "0");             //方法二：直接发送字符串0也可以
-      sendFlag = true;
-    }    
-  }
- iot.loop();
+    keyScan();
+    if(isClick)
+    {
+        if(keyFlag){
+        olq.publish(topic, "1");    
+        keyFlag = false;
+        }
+        else{
+        olq.publish(topic, "0");             
+        keyFlag = true;
+        }    
+    }
 }
 
-//按键扫描
+//按键防抖扫描
 void keyScan()
 {
    if((digitalRead(buttonPin)!=normalVoltage)&&!isPress)
@@ -249,6 +274,7 @@ void keyScan()
         hasPress = false;
     }
 }
+
 ```
 
 
@@ -303,13 +329,19 @@ void keyScan()
 实际程序中必须修改程序中以下信息才能正常使用。
 
 ```c++
-#define WIFI_SSID       "DFSoftware"            //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
-#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
-#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
+const String ssid = "DFRobot-guest";     //wifi名称
+const String password = "dfrobot@2017";  //wifi密码
+const String client_id = "SkxprkFyE-";   //物联网client_id
+const String iot_id = "r1qHJFJ4Z";     	 //物联网iot_id
+const String iot_pwd = "SylqH1Y1VZ";     //物联网iot_pwd
+const String topic = "BJpHJt1VW";        //物联网设备topic
+
 ...
 ...
-iot.subscribe("rkX4LYFeZ", eventHandle);        //"rkX4LYFeZ"改为当前通信的设备Topic
+Obloq olq(softSerial, ssid, password);  //生成Obloq对象
+olq.connect(client_id,iot_id,iot_pwd);  //连接MQTT
+olq.subscribe(topic);                   //注册设备
+...
 ...
 ```
 
@@ -318,49 +350,64 @@ iot.subscribe("rkX4LYFeZ", eventHandle);        //"rkX4LYFeZ"改为当前通信�
 **具体代码**
 
 ```c++
-#include <Arduino.h>
+#include <ArduinoJson.h>
 #include <SoftwareSerial.h>
-#include "Iot.h"
+#include "Obloq.h"
 
-Iot iot;                 
+//MQTT连接相关参数
+const String ssid = "DFRobot-guest";
+const String password = "dfrobot@2017";
+const String client_id = "SkxprkFyE-";
+const String iot_id = "r1qHJFJ4Z";
+const String iot_pwd = "SylqH1Y1VZ";
+const String topic = "BJpHJt1VW";
 
-int ledPin = 2;                            //led小灯引脚
+ //led小灯引脚
+int ledPin = 2;
 
-SoftwareSerial mySerial(10, 11);         // RX, TX
+int  sendPingFlag = true;                           
 
-#define WIFI_SSID       "DFSoftware"            //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
-#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
-#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
+SoftwareSerial softSerial(10, 11);         // RX, TX
+Obloq olq(softSerial, ssid, password);
 
-void * eventHandle(const char *data, uint16_t len)
+void handleRaw(String& data)
 {
-  
-   switch(atoi(data))                      //将物联网发送字符串转换成数字
+    //Serial.println(data);   //串口打印返回的数据
+}
+void handleJson(JsonObject& data)
+{
+    int message = 0;
+    char *deviceTopic = topic.c_str();
+    if(strcmp(data["topic"],deviceTopic) == 0)
     {
-      case 0:
-        digitalWrite(ledPin,LOW);           //关闭小灯
-        break;
-      case 1:
-        digitalWrite(ledPin,HIGH);          //打开小灯
-        break;
-      default:break;
-    }
-  
+        message = data["message"];
+        switch(message)
+        {
+            case 0: digitalWrite(ledPin,LOW);break;
+            case 1: digitalWrite(ledPin,HIGH) ;break;
+            default:break;
+        }
+    }  
 }
 
-void setup(void)
-{ 
-  mySerial.begin(38400);
-  pinMode(ledPin,OUTPUT);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
-  iot.subscribe("rkX4LYFeZ", eventHandle);
-  iot.start();
-}
-
-void loop(void)
+void setup()
 {
-	iot.loop();
+    //Serial.begin(9600);
+    softSerial.begin(9600);
+    pinMode(ledPin,OUTPUT);
+    //olq.setHandleRaw(handleRaw);
+    olq.setHandleJson(handleJson);
+}
+void loop()
+{
+    olq.update();
+    if(sendPingFlag && olq.getWifiState()==2)
+    {
+      sendPingFlag = false;
+      olq.connect(client_id,iot_id,iot_pwd);
+      delay(1000);
+      olq.subscribe(topic);
+    }
 }
 ```
 
