@@ -4,6 +4,8 @@ OBLOQ 是一块能够连通iot 网站和主控板通讯的中间件。在wifi环
 
 此文档是使用OBLOQ硬件的API说明。
 
+此[链接](https://github.com/DFRobot/Obloq.git)可以下载OBLOQ的库文件和样例代码。
+
 ### 连接wifi
 
 ------------
