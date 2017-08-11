@@ -1,6 +1,8 @@
-### OBLOQ Mqtt API document
+### OBLOQ API document
 
+OBLOQ  is a medium that connect the communication between iot website and controller. When wifi is available, the controller is able to connect to Internet via OBLOQ, pulling/pushing messages or control instructions to the remote end.
 
+This document is OBLOQ module's API description.
 
 ### Connect wifi
 

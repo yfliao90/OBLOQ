@@ -1,6 +1,10 @@
 # 使用MQTTLens连接IOT
 
-MQTTLens是一个免费MQTT工具，使用它可以连接到MQTT代理Broker（如iot.dfrobot.com.cn），进行订阅和发布到MQTT topic等操作。在Chrome的应用商城里就能搜到MQTTLens，请将它加入Chrome的扩展程序，并开启。
+iot.dfrobot.com.cn的通讯基于MQTT协议。任何MQTT客户端都可以连接和使用我们物联网。
+
+MQTTLens是一个免费MQTT客户端工具，接下来我们使用它连接到iot.dfrobot.com.cn，并进行订阅和发布操作。
+
+在Chrome的应用商城里就能搜到MQTTLens，请将它加入Chrome的扩展程序，并开启。
 
 ### 1. 建立MQTT连接
 

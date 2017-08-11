@@ -1,6 +1,10 @@
 # Connect IOT with MQTTLens 
 
-MQTTLens is a free MQTT tool. It helps to connect to MQTT Broker( i.e. iot.dfrobot.com.cn),  subscribe and publish to a specific MQTT device, etc. You can find this software in Chrome extension store. Before get start, let's add it to the Chrome extension and run.
+iot.dfrobot.com.cn is based on MQTT protocol. Any MQTT client is able to connect and use our IOT website.
+
+MQTTLens is a free MQTT client. We will then use it to connect to iot.dfrobot.com.cn, and subscribe and publish to a specific MQTT device. 
+
+You can find this software in Chrome extension store. Before get start, let's add it to the Chrome extension and run.
 
 ### 1. Establish MQTT connection
 
