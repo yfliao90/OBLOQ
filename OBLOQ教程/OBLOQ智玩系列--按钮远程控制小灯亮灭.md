@@ -16,17 +16,15 @@
 
 登录OBLOQ官网，注册账号。进入工作间。观察到左侧的用户信息：
 
-物联网ID (clientID): "ryHxUYFeW"
+物联网Iot_id:  "r1qHJFJ4Z"
 
-物联网Token (devicesToken): "SyPZIFKxZ|BJgD-IKYeZ" 
+物联网Iot_pwd: "SylqH1Y1VZ"
 
 ![用户信息](.\img\IDToken.png)
 
 在右侧工作界面中，新建一个设备，默认名字“设备一”。
 
 观察到新设备自动生成一个Topic，作为设备唯一可识别码。
-
-当前设备Token: "rkX4LYFeZ"
 
 ![创建设备Button](.\img\添加新的设备.png)
 
@@ -36,9 +34,8 @@
 
 为了稍后编程需要，记下这些关键信息，例如：
 
-- clientID：ryHxUYFeW
-- devicesToken：SyPZIFKxZ|BJgD-IKYeZ
-- Topic：rkX4LYFeZ
+- client_id: "ryHxUYFeW"
+- topic: "rkX4LYFeZ"
 
 
 
@@ -153,8 +150,8 @@
 实际程序中必须修改程序中以下信息才能正常使用。
 
 ```c++
-const String ssid = "DFRobot-guest";     //wifi名称
-const String password = "dfrobot@2017";  //wifi密码
+const String ssid = "testssid";          //wifi名称
+const String password = "testpwd";       //wifi密码
 const String client_id = "SkxprkFyE-";   //物联网client_id
 const String iot_id = "r1qHJFJ4Z";     	 //物联网iot_id
 const String iot_pwd = "SylqH1Y1VZ";     //物联网iot_pwd
@@ -179,8 +176,8 @@ olq.publish(topic, "1");                //发送消息
 #include "Obloq.h"
 
 //MQTT连接相关参数
-const String ssid = "DFRobot-guest";
-const String password = "dfrobot@2017";
+const String ssid = "testssid";   
+const String password = "testpwd";     
 const String client_id = "SkxprkFyE-";
 const String iot_id = "r1qHJFJ4Z";
 const String iot_pwd = "SylqH1Y1VZ";
@@ -329,8 +326,8 @@ void keyScan()
 实际程序中必须修改程序中以下信息才能正常使用。
 
 ```c++
-const String ssid = "DFRobot-guest";     //wifi名称
-const String password = "dfrobot@2017";  //wifi密码
+const String ssid = "testssid";          //wifi名称
+const String password = "testpwd";       //wifi密码
 const String client_id = "SkxprkFyE-";   //物联网client_id
 const String iot_id = "r1qHJFJ4Z";     	 //物联网iot_id
 const String iot_pwd = "SylqH1Y1VZ";     //物联网iot_pwd
@@ -355,8 +352,8 @@ olq.subscribe(topic);                   //注册设备
 #include "Obloq.h"
 
 //MQTT连接相关参数
-const String ssid = "DFRobot-guest";
-const String password = "dfrobot@2017";
+const String ssid = "testssid";     
+const String password = "testpwd";  
 const String client_id = "SkxprkFyE-";
 const String iot_id = "r1qHJFJ4Z";
 const String iot_pwd = "SylqH1Y1VZ";
@@ -364,10 +361,8 @@ const String topic = "BJpHJt1VW";
 
  //led小灯引脚
 int ledPin = 2;
-
 int  sendPingFlag = true;                           
-
-SoftwareSerial softSerial(10, 11);         // RX, TX
+SoftwareSerial softSerial(10, 11);     // RX, TX
 Obloq olq(softSerial, ssid, password);
 
 void handleRaw(String& data)
@@ -465,159 +460,92 @@ void loop()
 
 如果顺利的话，项目到这里就算完成了。
 
+然而，意外情况也是可能发生的。如果你遇到了不可判别原因的问题，可以尝试通过设置回显原始数据的回掉函数( olq.setHandleRaw(handleRaw))来查看OBLOQ返回的串口信息，从而排查出错的原因。
 
-
-然而，意外情况也是可能发生的。如果你遇到了不可判别原因的问题，可以尝试下面这段代码“检测故障”。
-
-将这段代码编译后，烧入疑似故障的硬件相连的主控板里，重启运行固件，查看串口打印出的消息，我们能够查看OBLOQ模块连接wifi和物联网服务器的连接状态，比如OBLOQ模块有没有连接成功。
+下面是演示的样例代码，将这段代码编译后，烧入疑似故障的硬件相连的主控板里，重启运行固件，查看串口打印出的消息，我们能够查看OBLOQ模块连接wifi和物联网服务器的连接状态。具体返回消息的消息可以对比API接口文档查看。
 
 
 
 ### 样例代码
 
 ```c++
-/****************************************************************************************
-* DFRobot_advancedReceive.
-*
-* Copyright (C)    2017   [DFRobot](http://www.dfrobot.com),
-* This Library is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Description:
-* Through the callback function to check the Internet of things connected to the various states, 
-* used to debug and modify the program
-* 
-*  //EVENT_CODE_WIFI               //0:ssid或密码错误,1:已连接,2:已断开
-*  //EVENT_CODE_SERVER             // 0:用户名或密码错误,1:已连接,2:已断开
-*  //EVENT_CODE_NEW_VERSION        // x:最新版本字符串信息
-*  //EVENT_CODE_UPGRADE_PERCENT    // 0~100 更新进度
-*  //EVENT_CODE_UART               // 0:异常,1:正常
-*  //EVENT_CODE_UNKNOWN            // 0:未定义错误
-*  
-* author  :  Jason
-* version :  V1.0
-* date    :  2017-03-06
-*****************************************************************************************/
-
+#include <ArduinoJson.h>
 #include <SoftwareSerial.h>
-#include "Iot.h"
+#include "Obloq.h"
 
-#define IOTDBG(...) if(1){Serial.print("["); Serial.print(__FUNCTION__); Serial.print("(): "); Serial.print(__LINE__); Serial.print(" ] "); Serial.println(__VA_ARGS__);}
-void * eventCb(uint8_t type, const char *data, uint16_t len);
-Iot iot(eventCb);
+const String ssid = "wifissid";
+const String password = "wifipwd";
+const String client_id = "SkxprkFyE-";
+const String iot_id = "r1qHJFJ4Z";
+const String iot_pwd = "SylqH1Y1VZ";
+const String topic = "BJpHJt1VW";
 
-SoftwareSerial mySerial(10, 11);         // RX, TX
+SoftwareSerial softSerial(10, 11);         // RX, TX
 
-#define WIFI_SSID       "DFSoftware"            //wifi名称
-#define WIFI_PASSWD     "dfrobotsoftware"       //wifi密码
-#define CLIENT_ID       "ryHxUYFeW"             //物联网ID
-#define IOT_TOKEN       "SyPZIFKxZ|BJgD-IKYeZ"  //物联网账Token
-
-unsigned long long sendTime = 0;
 bool sendFlag = true;
+int actionMode = 0;
+int disconnectCount = 0;
 
-void * eventCb(uint8_t eventType, const char *data, uint16_t len)
+Obloq olq(softSerial, ssid, password);
+
+void handleRaw(const String& data)
 {
- 
-  IOTDBG(eventType,HEX);
-  IOTDBG(data[0],HEX);
-  switch(eventType){
-    case EVENT_CODE_WIFI:
-      if(data[0] == 0){
-        IOTDBG("EVENT_CODE_WIFI: ssid or passwd error");
-      }else if(data[0] == 1){
-        IOTDBG("EVENT_CODE_WIFI: wifi connect");
-      }else if(data[0] == 2){
-        IOTDBG("EVENT_CODE_WIFI: wifi disconnect");
-      }else{
-        IOTDBG("EVENT_CODE_WIFI: wifi error arg");
-      }
-      break;
-    case EVENT_CODE_SERVER:
-      if(data[0] == 1){
-        IOTDBG("EVENT_CODE_SERVER: server connect");
-      }else if(data[0] == 2){
-        IOTDBG("EVENT_CODE_SERVER: server disconnect");
-      }else if(data[0] == 0){
-        IOTDBG("EVENT_CODE_SERVER: username or passwd error");
-      }else{
-        IOTDBG("EVENT_CODE_SERVER: server error arg");
-      }
-      break;
-    case EVENT_CODE_NEW_VERSION:
-      IOTDBG("eventType: has new Version");
-      IOTDBG(data);
-      //iot.update();//默认升级到当前平台最新版//iot.update(PLATFORM_CURRENT,"0");
-      break;
-    case EVENT_CODE_UPGRADE_PERCENT:
-      //uint8_t percent = (uint8_t)data[0];
-      IOTDBG("eventType: upgrade percent:");
-      IOTDBG((uint8_t)data[0]);
-    case EVENT_CODE_UART:
-      break;
-    case EVENT_CODE_UNKNOWN:
-      break;
-    default:
-      break;
-  }
+    Serial.println(data);   //串口打印返回的数据
+}
+void handleJson(JsonObject& data)
+{
+    if(strcmp(data["type"],"mqtt") == 0)
+    {
+       if(data["mqttState"] == 1)
+        {      
+            actionMode = 1;     
+            return;
+        }
+        else if(data["mqttState"] == -1)
+        {
+            disconnectCount++;
+            if(disconnectCount == 1)
+                actionMode = 4; 
+        }
+        else if(data["subscribe"] == 1)
+        {
+            actionMode = 2;
+            return;
+        }
+        else if(data["message"] != "")
+        {
+            actionMode = 3;
+            return;
+        }           
+    }
+    return;
 }
 
-void * myTest(const char *data, uint16_t len)
+void setup()
 {
-  Serial.print("my Button Recv:");
-  Serial.println(data);
-  Serial.print("len=");
-  Serial.println(len);
-  return NULL;
+    softSerial.begin(9600);
+    Serial.begin(9600);
+    olq.setHandleRaw(handleRaw);
+    olq.setHandleJson(handleJson);
 }
-
-void setup(void)
+void loop()
 {
-  Serial.begin(115200);
-  mySerial.begin(38400);
-  while(!Serial);
-  iot.setDbgSerial(Serial);
-  iot.setup(mySerial, WIFI_SSID, WIFI_PASSWD, CLIENT_ID, IOT_TOKEN);
-  iot.subscribe("rkX4LYFeZ", myTest);          
-  iot.start();
-}
-
-void loop(void)
-{
-  //两秒钟发送一次字符串，循环发送"down","up"
-	if(millis() - sendTime > 2000){
-		sendTime = millis();
-		if(sendFlag){
+    olq.update();
+    if(sendFlag && olq.getWifiState()==2)
+    {
       sendFlag = false;
-			iot.publish("rkX4LYFeZ", "down");
-		}else{
-      sendFlag = true;
-			iot.publish("rkX4LYFeZ", "up");
-		}
-	}
-	iot.loop();
+      olq.connect(client_id,iot_id,iot_pwd);
+    }
+    switch(actionMode)
+    {
+        case 1: olq.subscribe(topic); actionMode = 0; break;
+        case 2: olq.publish(topic,"hello world"); actionMode = 0; break;
+        case 3: olq.disconnect(); actionMode = 0; break;
+        case 4: olq.reconnect(); actionMode = 0; break;
+        default: actionMode = 0; break;
+    }
 }
 ```
-
-
-
-有经验的用户可能已经看出来了，这是回调函数的一种用法。
-
-下表是这段代码打印出来的日志信息的具体含义。请大家核对。
-
-
-
-| log消息                                    | 消息含义         |
-| :--------------------------------------- | ------------ |
-| **EVENT_CODE_WIFI: ssid or passwd error** | wifi账号或者密码错误 |
-| **EVENT_CODE_WIFI: wifi connect **       | wifi连接成功     |
-| **EVENT_CODE_WIFI: wifi disconnect**     | wifi断开连接     |
-| **EVENT_CODE_SERVER: server connect**    | 服务器连接成功      |
-| **EVENT_CODE_SERVER: server disconnect** | 服务器断开连接      |
-| **EVENT_CODE_SERVER: username or passwd error** | 物联网账号或密码错误   |
-| **eventType: has new Version**           | 有新固件         |
 
 
 
