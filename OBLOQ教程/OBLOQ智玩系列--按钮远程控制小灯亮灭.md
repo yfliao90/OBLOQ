@@ -122,7 +122,7 @@
 **在写控制程序之前，你可能需要知道Arduino UNO程序烧录的基本操作步骤**
 
 1. 查看 [Arduino中文手册](http://www.dfrobot.com.cn/images/upload/File/20150129112804mdoxsq.pdf) 第1-13页，下载安装Arduino IDE和驱动，配置板卡和串口.
-2. 下载DFRobot的 IoT库文件，并在Arduino内部加载。（[IoT库文件下载地址](https://github.com/DFRobot/IotTest), [Arduino加载库文件的方法](https://jingyan.baidu.com/article/8065f87f904f4c2331249881.html)）
+2. 下载DFRobot的 OBLOQ库文件，并在Arduino内部加载。（[OBLOQ库文件下载地址](https://github.com/DFRobot/Obloq.git), [Arduino加载库文件的方法](https://jingyan.baidu.com/article/8065f87f904f4c2331249881.html)）
 3. 在Arduino IDE内输入程序源码，进行验证（也就是编译），最后下载（也就是烧录）。
 
 
@@ -149,7 +149,7 @@
 ```c++
 const String ssid = "testssid";          //wifi名称
 const String password = "testpwd";       //wifi密码
-const String client_id = "SkxprkFyE-";   //物联网client_id
+const String client_id = "47dd01354ee3b0a7";   //物联网client_id
 const String iot_id = "r1qHJFJ4Z";     	 //物联网iot_id
 const String iot_pwd = "SylqH1Y1VZ";     //物联网iot_pwd
 const String topic = "BJpHJt1VW";        //物联网设备topic
@@ -175,7 +175,7 @@ olq.publish(topic, "1");                //发送消息
 //MQTT连接相关参数
 const String ssid = "testssid";   
 const String password = "testpwd";     
-const String client_id = "SkxprkFyE-";
+const String client_id = "47dd01354ee3b0a7";
 const String iot_id = "r1qHJFJ4Z";
 const String iot_pwd = "SylqH1Y1VZ";
 const String topic = "BJpHJt1VW";
@@ -268,7 +268,6 @@ void keyScan()
         hasPress = false;
     }
 }
-
 ```
 
 
@@ -325,7 +324,7 @@ void keyScan()
 ```c++
 const String ssid = "testssid";          //wifi名称
 const String password = "testpwd";       //wifi密码
-const String client_id = "SkxprkFyE-";   //物联网client_id
+const String client_id = "47dd01354ee3b0a7";   //物联网client_id
 const String iot_id = "r1qHJFJ4Z";     	 //物联网iot_id
 const String iot_pwd = "SylqH1Y1VZ";     //物联网iot_pwd
 const String topic = "BJpHJt1VW";        //物联网设备topic
@@ -351,7 +350,7 @@ olq.subscribe(topic);                   //注册设备
 //MQTT连接相关参数
 const String ssid = "testssid";     
 const String password = "testpwd";  
-const String client_id = "SkxprkFyE-";
+const String client_id = "47dd01354ee3b0a7";
 const String iot_id = "r1qHJFJ4Z";
 const String iot_pwd = "SylqH1Y1VZ";
 const String topic = "BJpHJt1VW";
@@ -473,7 +472,7 @@ void loop()
 
 const String ssid = "wifissid";
 const String password = "wifipwd";
-const String client_id = "SkxprkFyE-";
+const String client_id = "47dd01354ee3b0a7";
 const String iot_id = "r1qHJFJ4Z";
 const String iot_pwd = "SylqH1Y1VZ";
 const String topic = "BJpHJt1VW";
