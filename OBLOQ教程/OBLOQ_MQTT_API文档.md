@@ -1,6 +1,10 @@
-### OBLOQ Mqtt API说明文档
+### OBLOQ API说明文档
 
+OBLOQ 是一块能够连通iot 网站和主控板通讯的中间件。在wifi环境下，主控板通过OBLOQ模块能连上互联网，按时发送设备数据或者接收远端控制指令。
 
+此文档是使用OBLOQ硬件的API说明。
+
+此[链接](https://github.com/DFRobot/Obloq.git)可以下载OBLOQ的库文件和样例代码。
 
 ### 连接wifi
 

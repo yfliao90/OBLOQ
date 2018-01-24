@@ -81,7 +81,7 @@ Each device will have an unique id (Topic).
 
 Iot_id and Iot_pwd are on the left of workshop page. 
 
-![用户信息](.\img\009.png)
+![用户信息](.\img\027.png)
 
 keep in mind the information below for further use:
 
